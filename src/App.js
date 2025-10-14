@@ -1,101 +1,42 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/ui/Navbar";
+import Home from "./pages/Home";
+import Generate from "./pages/Generate";
+import AboutUs from "./pages/AboutUs";
 import { useState, useEffect } from "react";
-import ThemeProvider from "./components/ui/ThemeProvider";
 
 function App() {
-  const [imageUrl, setImageUrl] = useState(""); // will be set from API
-  const [loading, setLoading] = useState(true); // start loading immediately
+  // Load theme from localStorage if available
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
 
-  const fetchCatgirl = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        "https://api.nekosia.cat/api/v1/images/catgirl"
-      );
-      const data = await response.json();
-
-      if (data?.image?.original?.url) {
-        setImageUrl(data.image.original.url);
-      } else {
-        alert("No image found 😿");
-      }
-    } catch (error) {
-      console.error("Error fetching image:", error);
-      alert("Failed to fetch image 😿");
-    } finally {
-      setLoading(false);
-    }
+  const toggleTheme = () => {
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme); // save theme
+      return newTheme;
+    });
   };
 
-  // Download the current image
-  const downloadImage = async () => {
-    if (!imageUrl) return alert("No image to download!");
-
-    try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "catgirl.jpg";
-      a.click();
-
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading image:", error);
-      alert("Failed to download image 😿");
-    }
-  };
-
-  // Fetch a default image when component mounts
+  // Optional: sync localStorage if user changed system preferences
   useEffect(() => {
-    fetchCatgirl();
-  }, []);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
-    <ThemeProvider>
-      <main className="flex flex-col items-center justify-center text-center p-4 bg-white dark:bg-gray-900 min-h-screen">
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt="Catgirl"
-            className={`w-full max-w-md h-auto object-cover mb-6 rounded-lg shadow-lg transition-all duration-500 ${
-              loading ? "opacity-50 blur-sm" : "opacity-100"
-            }`}
-          />
-        ) : (
-          <div className="w-60 h-60 flex items-center justify-center mb-6 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg">
-            <span className="text-gray-500">Loading image...</span>
-          </div>
-        )}
-
-        {/* Fetch Button */}
-        <button
-          onClick={fetchCatgirl}
-          disabled={loading}
-          className={`mt-4 px-6 py-3 font-semibold rounded-lg shadow-md transition duration-300 ${
-            loading
-              ? "bg-gray-400 text-white cursor-not-allowed"
-              : "bg-blue-600 text-white hover:bg-blue-700"
-          }`}
-        >
-          {loading ? "Loading..." : "Generate Image"}
-        </button>
-
-        {/* Download Button */}
-        <button
-          onClick={downloadImage}
-          disabled={!imageUrl || loading}
-          className={`mt-3 px-6 py-3 font-semibold rounded-lg shadow-md transition duration-300 ${
-            !imageUrl || loading
-              ? "bg-gray-400 text-white cursor-not-allowed"
-              : "bg-green-600 text-white hover:bg-green-700"
-          }`}
-        >
-          Download Image ⬇️
-        </button>
-      </main>
-    </ThemeProvider>
+    <BrowserRouter>
+      <div className={theme}>
+        <Navbar theme={theme} toggleTheme={toggleTheme} />
+        <main className="min-h-screen bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/generate" element={<Generate />} />
+            <Route path="/aboutus" element={<AboutUs />} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
   );
 }
 

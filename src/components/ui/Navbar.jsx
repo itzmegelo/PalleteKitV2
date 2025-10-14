@@ -5,14 +5,13 @@ export default function Navbar({ theme, toggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const navItems = [
-    { name: "Home", href: "#" },
-    { name: "About", href: "#" },
-    { name: "Services", href: "#" },
-    { name: "Contact", href: "#" },
+    { name: "Home", href: "/" },
+    { name: "Generate", href: "/generate" },
+    { name: "About Us", href: "/aboutus" },
   ]
 
   return (
-    <nav className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700">
+    <nav className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 sticky top-0 z-50 w-full backdrop-blur-sm transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -20,7 +19,7 @@ export default function Navbar({ theme, toggleTheme }) {
             Waifu
           </a>
 
-          {/* {}
+          {}
           <div className="hidden md:flex space-x-6">
             {navItems.map((item) => (
               <a
@@ -31,7 +30,7 @@ export default function Navbar({ theme, toggleTheme }) {
                 {item.name}
               </a>
             ))}
-          </div> */}
+          </div>
 
           {/* Right Controls */}
           <div className="flex items-center space-x-4">
@@ -43,17 +42,17 @@ export default function Navbar({ theme, toggleTheme }) {
             </button>
 
             {/* Mobile Menu Button */}
-            {/* <button
+            <button
               className="md:hidden p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? <X /> : <Menu />}
-            </button> */}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* {}
+      {}
       {menuOpen && (
         <div className="md:hidden bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700">
           <div className="px-4 py-2 space-y-2">
@@ -68,7 +67,7 @@ export default function Navbar({ theme, toggleTheme }) {
             ))}
           </div>
         </div>
-      )} */}
+      )}
     </nav>
   )
 }
