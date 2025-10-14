@@ -15,7 +15,7 @@ const images = [
 const Gallery = () => {
   return (
     <section className="py-12 px-4 md:px-12 bg-gray-100 dark:bg-gray-900 w-full">
-      <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-gray-900 dark:text-white">
+      <h1 className="text-5xl md:text-6xl font-black mb-6 leading-tight text-back-2">
         <span className="text-[#6366f1]">Anime</span> Gallery
       </h1>
       <div className="columns-2 md:columns-3 lg:columns-4 space-y-4">
