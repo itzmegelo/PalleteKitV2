@@ -18,22 +18,49 @@ const Gallery = () => {
       <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-gray-900 dark:text-white">
         <span className="text-[#6366f1]">Anime</span> Gallery
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {images.map((src, index) => (
-          <div
-            key={index}
-            className="overflow-hidden rounded-lg shadow-lg hover:scale-105 transform transition duration-300"
-          >
-            <LazyLoadImage
-              src={src}
-              alt={`Gallery ${index + 1}`}
-              className="w-full h-64 object-cover"
-              effect="blur" // adds smooth blur placeholder
-              width="100%"
-              height="100%"
-            />
-          </div>
-        ))}
+      <div className="columns-2 md:columns-3 lg:columns-4 space-y-4">
+        <div className=" bg-gray-100 rounded-lg overflow-hidden">
+          <img
+            src="/images/catgirl1.jpg"
+            alt="img-1"
+            className="h-auto max-w-full object-cover object-top"
+          />
+        </div>
+        <div className=" bg-gray-100 rounded-lg overflow-hidden">
+          <img
+            src="/images/catgirl2.jpg"
+            alt="img-2"
+            className="h-auto max-w-full object-cover object-top"
+          />
+        </div>
+        <div className=" bg-gray-100 rounded-lg overflow-hidden">
+          <img
+            src="/images/catgirl3.jpg"
+            alt="img-3"
+            className="h-auto max-w-full object-cover object-top"
+          />
+        </div>
+        <div className=" bg-gray-100 rounded-lg overflow-hidden">
+          <img
+            src="/images/catgirl4.jpg"
+            alt="img-4"
+            className="h-auto max-w-full object-cover object-top"
+          />
+        </div>
+        <div className=" bg-gray-100 rounded-lg overflow-hidden">
+          <img
+            src="/images/catgirl5.jpg"
+            alt="img-5"
+            className="h-auto max-w-full object-cover object-top"
+          />
+        </div>
+        <div className=" bg-gray-100 rounded-lg overflow-hidden">
+          <img
+            src="/images/catgirl6.jpg"
+            alt="img-6"
+            className="h-auto max-w-full object-cover object-top"
+          />
+        </div>
       </div>
     </section>
   );

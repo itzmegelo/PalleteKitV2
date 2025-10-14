@@ -87,7 +87,7 @@ function App() {
           </div>
         </div>
       </section>
-     
+      <Gallery />
     </main>
   );
 }
