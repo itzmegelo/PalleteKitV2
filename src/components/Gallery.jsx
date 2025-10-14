@@ -27,7 +27,7 @@ const Gallery = () => {
             <LazyLoadImage
               src={src}
               alt={`Gallery ${index + 1}`}
-              className=" object-cover"
+              className="w-full h-64 object-cover"
               effect="blur" // adds smooth blur placeholder
               width="100%"
               height="100%"
