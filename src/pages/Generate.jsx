@@ -98,7 +98,7 @@ function App() {
                   className={`inline-block bg-[#6366f1] text-white font-extrabold py-3 px-4 rounded-xl hover:bg-red-500 transition duration-300 shadow-xl shadow-accent-main/50 ${
                     loading
                       ? "bg-gray-400 text-white cursor-not-allowed"
-                      : "bg-blue-600 text-white hover:bg-blue-700"
+                      : "bg-[#6366f1] text-white hover:bg-[#6366f1]"
                   }`}
                 >
                   {loading ? "Loading..." : "Generate Image"}
@@ -110,7 +110,7 @@ function App() {
                   className={`inline-block bg-gray-900 border-2 border-[#6366f1] text-[#6366f1] font-semibold py-3 px-4 rounded-xl hover:bg-[#6366f1] hover:text-white transition duration-300 shadow-xl shadow-accent-main/50 ${
                     !imageUrl || loading
                       ? "bg-gray-400 text-white cursor-not-allowed"
-                      : "bg-green-600 text-white hover:bg-green-700"
+                      : "bg-[#6366f1] text-white hover:bg-[#6366f1]"
                   }`}
                 >
                   Download Image

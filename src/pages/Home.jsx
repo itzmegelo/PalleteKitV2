@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import Gallery from "../components/Gallery";
+import ContactUs from "../components/ContactUs";
 function App() {
   return (
     <main className="flex flex-col items-center justify-center text-center p-4 bg-white dark:bg-gray-900 min-h-screen">
@@ -88,6 +89,7 @@ function App() {
         </div>
       </section>
       <Gallery />
+      <ContactUs />
     </main>
   );
 }

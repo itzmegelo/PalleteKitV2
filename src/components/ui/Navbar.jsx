@@ -15,8 +15,11 @@ export default function Navbar({ theme, toggleTheme }) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <a href="#" className="text-xl font-bold text-blue-600 dark:text-blue-400">
-            Waifu
+          <a
+            href="/"
+            className="text-3xl font-extrabold text-black dark:text-white"
+          >
+            Wai<span className="text-[#6366f1]">fu</span>
           </a>
 
           {}
@@ -25,7 +28,7 @@ export default function Navbar({ theme, toggleTheme }) {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="text-gray-700 dark:text-gray-200 hover:text-[#6366f1] dark:hover:text-[#6366f1] transition-colors"
               >
                 {item.name}
               </a>
@@ -36,14 +39,18 @@ export default function Navbar({ theme, toggleTheme }) {
           <div className="flex items-center space-x-4">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="p-2 text-white rounded-full bg-[#6366f1] dark:bg-[#6366f1] hover:bg-[#6366f1] dark:hover:bg-[#6366f1]"
             >
-              {theme === "dark" ? <Sun size={18} /> : <Moon className="text-white" size={18} />}
+              {theme === "dark" ? (
+                <Sun size={18} />
+              ) : (
+                <Moon size={18} />
+              )}
             </button>
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="md:hidden p-2 rounded-md text-[#6366f1] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#6366f1]"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? <X /> : <Menu />}
@@ -60,7 +67,7 @@ export default function Navbar({ theme, toggleTheme }) {
               <a
                 key={item.name}
                 href={item.href}
-                className="block text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="block text-gray-700 dark:text-gray-200 hover:text-[#6366f1] dark:hover:text-[#6366f1] transition-colors"
               >
                 {item.name}
               </a>
@@ -69,5 +76,5 @@ export default function Navbar({ theme, toggleTheme }) {
         </div>
       )}
     </nav>
-  )
+  );
 }
