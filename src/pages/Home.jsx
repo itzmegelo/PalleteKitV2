@@ -30,6 +30,15 @@ function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Email",
+        text: "Please enter a valid email address.",
+      });
+      return;
+    }
     if (!email.trim()) {
       Swal.fire({
         icon: "warning",
@@ -43,12 +52,17 @@ function Home() {
     const newCode = crypto.randomUUID().slice(0, 8);
 
     // Insert new user
+    const userIP = await fetch("https://api.ipify.org?format=json")
+      .then((res) => res.json())
+      .then((data) => data.ip);
+
     const { error } = await supabase.from("tbl_submissions").insert([
       {
         email,
         referral_code: newCode,
         referred_by: referredBy || null,
         referral_count: 0,
+        ip_address: userIP,
       },
     ]);
     setLoading(false);
@@ -61,7 +75,14 @@ function Home() {
       });
       return;
     }
-
+    if (error && error.message.includes("duplicate")) {
+      Swal.fire({
+        icon: "error",
+        title: "Duplicate Email",
+        text: "This email has already joined the giveaway.",
+      });
+      return;
+    }
     // 🔥 Update the referral count for referrer
     if (referredBy) {
       const { data: referrerData, error: referrerError } = await supabase
