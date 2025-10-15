@@ -142,7 +142,7 @@ function Home() {
   }, [userCode]);
 
   return (
-    <main className="flex flex-col items-center justify-center text-center p-4 min-h-screen bg-white dark:bg-gray-900">
+    <main className="flex flex-col items-center justify-center text-center min-h-screen bg-white dark:bg-gray-900">
       <section className="min-h-[90vh] flex items-center justify-center p-8">
         <div className="max-w-4xl text-center">
           <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-black dark:text-white">
@@ -175,6 +175,43 @@ function Home() {
               {loading ? "Submitting..." : "Submit"}
             </button>
           </form>
+        </div>
+      </section>
+      {/* ======= Notice Section ======= */}
+      <section className="w-full py-10 px-6 bg-gray-100 dark:bg-gray-800 border-t border-b border-gray-300 dark:border-gray-700">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#6366f1]">
+            📢 Latest Announcement
+          </h2>
+
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
+            <span className="font-semibold">New giveaway period:</span> October
+            15–31, 2025 🎉 Invite your friends and increase your chances to win
+            up to{" "}
+            <span className="font-bold text-[#6366f1]">
+              5GB shareable data!
+            </span>
+          </p>
+
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-md p-6 mt-6">
+            <ul className="text-gray-700 dark:text-gray-300 text-left space-y-3">
+              <li>
+                🏆 <strong>Weekly Winners</strong> will be announced every
+                Friday at 6PM.
+              </li>
+              <li>
+                🚫 <strong>No self-referrals</strong> — multiple entries under
+                the same name or email will be disqualified.
+              </li>
+              <li>
+                📬 Winners will be contacted via the email they registered with.
+              </li>
+              <li>
+                💡 Tip: The more unique referrals you make, the higher your
+                chance of winning!
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
     </main>
