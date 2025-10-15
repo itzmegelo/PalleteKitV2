@@ -1,97 +1,163 @@
 import { useState, useEffect } from "react";
-import Alert from "@mui/material/Alert";
-import Gallery from "../components/Gallery";
-import Footer from "../components/Footer";
-function App() {
+import Swal from "sweetalert2";
+import { supabase } from "../supabaseClient";
+
+function Home() {
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [refLink, setRefLink] = useState("");
+  const [referralCount, setReferralCount] = useState(0);
+  const [userCode, setUserCode] = useState("");
+
+  // Detect referral code in URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get("ref");
+    if (ref) localStorage.setItem("referred_by", ref);
+  }, []);
+
+  // Fetch referral count for the logged user
+  const fetchReferralCount = async (code) => {
+    const { data, error } = await supabase
+      .from("tbl_submissions")
+      .select("referral_count")
+      .eq("referral_code", code)
+      .single();
+
+    if (!error && data) setReferralCount(data.referral_count);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (!email.trim()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Email Required",
+        text: "Please enter your email before submitting.",
+      });
+      return;
+    }
+
+    const referredBy = localStorage.getItem("referred_by");
+    const newCode = crypto.randomUUID().slice(0, 8);
+
+    // Insert new user
+    const { error } = await supabase.from("tbl_submissions").insert([
+      {
+        email,
+        referral_code: newCode,
+        referred_by: referredBy || null,
+        referral_count: 0,
+      },
+    ]);
+    setLoading(false);
+    if (error) {
+      console.error("Error submitting:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text: "Something went wrong. Please try again.",
+      });
+      return;
+    }
+
+    // 🔥 Update the referral count for referrer
+    if (referredBy) {
+      const { data: referrerData, error: referrerError } = await supabase
+        .from("tbl_submissions")
+        .select("referral_count")
+        .eq("referral_code", referredBy)
+        .single();
+
+      if (!referrerError && referrerData) {
+        const newCount = (referrerData.referral_count || 0) + 1;
+
+        const { error: updateError } = await supabase
+          .from("tbl_submissions")
+          .update({ referral_count: newCount })
+          .eq("referral_code", referredBy);
+
+        if (updateError)
+          console.error("Error updating referral count:", updateError);
+      }
+    }
+
+    // Generate user referral link
+    const link = `${window.location.origin}/?ref=${newCode}`;
+    setRefLink(link);
+    setUserCode(newCode);
+    setEmail("");
+    await fetchReferralCount(newCode);
+
+    Swal.fire({
+      icon: "success",
+      title: "🎉 Submission Successful!",
+      html: `
+        <p>Thank you for joining! Your referral link:</p>
+        <a href="${link}" target="_blank" class="text-blue-500 font-semibold">${link}</a>
+        <br><br>
+        <p><b>Your current referrals:</b> ${referralCount}</p>
+      `,
+      showConfirmButton: true,
+      confirmButtonText: "Copy Link",
+      confirmButtonColor: "#6366f1",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigator.clipboard.writeText(link);
+        Swal.fire({
+          icon: "success",
+          title: "Copied!",
+          text: "Your referral link has been copied to clipboard.",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (userCode) fetchReferralCount(userCode);
+  }, [userCode]);
+
   return (
-    <main className="flex flex-col items-center justify-center text-center p-4 bg-white dark:bg-gray-900 min-h-screen">
-      <section
-        id="intro"
-        className="min-h-[90vh] flex items-center justify-center p-8"
-      >
+    <main className="flex flex-col items-center justify-center text-center p-4 min-h-screen bg-white dark:bg-gray-900">
+      <section className="min-h-[90vh] flex items-center justify-center p-8">
         <div className="max-w-4xl text-center">
-          <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-back-2">
-            Auto-Generate. Prompt.{" "}
-            <span className="text-[#6366f1]">Instant Anime.</span>
+          <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-black dark:text-white">
+            Connect. Share. <span className="text-[#6366f1]">Win MBs.</span>
           </h1>
+
           <p className="text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
-            Welcome to the ultimate tool for creating stunning, personalized
-            anime artwork. Our AI turns your wildest concepts into high-quality
-            visual masterpieces in seconds.
+            Submit your email to join our giveaway. Invite friends using your
+            link and increase your chances to win shareable data!
           </p>
-          <div className="flex flex-col md:flex-row gap-6 justify-center">
-            <a
+
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col md:flex-row gap-6 justify-center items-center"
+          >
+            <input
+              type="email"
+              placeholder="Enter your email..."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full md:w-96 p-4 text-lg rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#6366f1] transition duration-200"
+            />
+            <button
+              type="submit"
+              disabled={loading}
               id="autoPromptButton"
-              href="/generate"
-              className="inline-block bg-[#6366f1] text-white font-extrabold py-4 px-10 rounded-xl text-xl hover:bg-red-500 transition duration-300 shadow-xl shadow-accent-main/50"
+              className="bg-[#6366f1] text-white font-extrabold py-4 px-10 rounded-xl text-xl hover:bg-red-500 transition duration-300 shadow-xl shadow-accent-main/50"
             >
-              Generate
-            </a>
-            <a
-              id="autoPromptButton"
-              href="/generate"
-              className="inline-block bg-gray-900 border-2 border-[#6366f1] text-[#6366f1] font-extrabold py-4 px-10 rounded-xl text-xl hover:bg-[#6366f1] hover:text-white transition duration-300 shadow-xl shadow-accent-main/50"
-            >
-              About Us
-            </a>
-          </div>
+              {loading ? "Submitting..." : "Submit"}
+            </button>
+          </form>
         </div>
       </section>
-      <section
-        id="description"
-        className="min-h-[90vh] flex items-center justify-center p-8"
-      >
-        <div className="max-w-4xl text-center">
-          <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight text-back-2">
-            Why Choose Our{" "}
-            <span className="text-[#6366f1]">AI Anime Generator</span>?
-          </h2>
-          <p className="text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
-            Our AI anime generator is designed to make the process of creating
-            anime artwork as simple and enjoyable as possible. Whether you're a
-            seasoned artist or just starting out, our tool provides an easy way
-            to bring your ideas to life.
-          </p>
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-            {/* Card 1 */}
-            <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-purple-900 dark:to-purple-700 p-6 rounded-2xl shadow-xl border border-purple-200 dark:border-purple-600 transform hover:-translate-y-2 hover:scale-105 transition-all duration-300">
-              <h4 className="text-xl font-extrabold mb-3 text-purple-600 dark:text-purple-300">
-                AI-Powered Waifus
-              </h4>
-              <p className="text-gray-600 dark:text-gray-300">
-                Generate beautiful and unique anime waifus instantly using
-                advanced AI technology.
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-cyan-900 dark:to-cyan-700 p-6 rounded-2xl shadow-xl border border-cyan-200 dark:border-cyan-600 transform hover:-translate-y-2 hover:scale-105 transition-all duration-300">
-              <h4 className="text-xl font-extrabold mb-3 text-cyan-600 dark:text-cyan-300">
-                Customizable Styles
-              </h4>
-              <p className="text-gray-600 dark:text-gray-300">
-                Explore a variety of artistic styles, from cute and whimsical to
-                cool and edgy.
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-orange-900 dark:to-orange-700 p-6 rounded-2xl shadow-xl border border-orange-200 dark:border-orange-600 transform hover:-translate-y-2 hover:scale-105 transition-all duration-300">
-              <h4 className="text-xl font-extrabold mb-3 text-orange-600 dark:text-orange-300">
-                Fast & Easy
-              </h4>
-              <p className="text-gray-600 dark:text-gray-300">
-                Generate your favorite waifus quickly with a simple click—no
-                extra steps required.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      <Gallery />
-      <Footer />
     </main>
   );
 }
 
-export default App;
+export default Home;

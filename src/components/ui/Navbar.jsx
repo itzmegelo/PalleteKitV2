@@ -6,7 +6,7 @@ export default function Navbar({ theme, toggleTheme }) {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Generate", href: "/generate" },
+    { name: "Winners", href: "/generate" },
     { name: "About Us", href: "/aboutus" },
   ]
 
@@ -19,7 +19,7 @@ export default function Navbar({ theme, toggleTheme }) {
             href="/"
             className="text-3xl font-extrabold text-black dark:text-white"
           >
-            Wai<span className="text-[#6366f1]">fu</span>
+            Share<span className="text-[#6366f1]">&Win</span>
           </a>
 
           {}
