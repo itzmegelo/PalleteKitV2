@@ -118,7 +118,6 @@ function Home() {
         <p>Thank you for joining! Your referral link:</p>
         <a href="${link}" target="_blank" class="text-blue-500 font-semibold">${link}</a>
         <br><br>
-        <p><b>Your current referrals:</b> ${referralCount}</p>
       `,
       showConfirmButton: true,
       confirmButtonText: "Copy Link",

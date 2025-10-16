@@ -5,12 +5,13 @@ function AboutUs() {
     <main className="flex flex-col items-center justify-center text-center p-6 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <section className="max-w-4xl mx-auto py-16">
         <h1 className="text-6xl md:text-7xl font-black mb-8 leading-tight">
-          About <span className="text-[#6366f1]">WinMB</span>
+          About <span className="text-[#6366f1]">Share&Win</span>
         </h1>
 
         <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-          Welcome to <span className="font-semibold text-[#6366f1]">WinMB</span>{" "}
-          — a fun and rewarding way to connect with friends, share your referral
+          Welcome to{" "}
+          <span className="font-semibold text-[#6366f1]">Share&Win</span> — a
+          fun and rewarding way to connect with friends, share your referral
           link, and earn shareable mobile data rewards! Every week, lucky
           participants are randomly selected to win MBs based on their
           engagement and referrals.
@@ -39,7 +40,7 @@ function AboutUs() {
             </h3>
             <p className="text-gray-600 dark:text-gray-300">
               We believe in rewarding community engagement.{" "}
-              <span className="font-semibold text-[#6366f1]">WinMB</span>{" "}
+              <span className="font-semibold text-[#6366f1]">Share&Win</span>{" "}
               promotes sharing, connection, and fair rewards — giving students
               and users alike a chance to stay connected without worrying about
               data limits.
