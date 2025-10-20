@@ -19,7 +19,7 @@ export default function Navbar({ theme, toggleTheme }) {
             href="/"
             className="text-3xl font-extrabold text-black dark:text-white"
           >
-            Share<span className="text-[#6366f1]">&Win</span>
+            Pallete<span className="text-[#6366f1]">Kit</span>
           </a>
 
           {}
@@ -41,11 +41,7 @@ export default function Navbar({ theme, toggleTheme }) {
               onClick={toggleTheme}
               className="p-2 text-white rounded-full bg-[#6366f1] dark:bg-[#6366f1] hover:bg-[#6366f1] dark:hover:bg-[#6366f1]"
             >
-              {theme === "dark" ? (
-                <Sun size={18} />
-              ) : (
-                <Moon size={18} />
-              )}
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
             {/* Mobile Menu Button */}

@@ -1,218 +1,31 @@
-import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import { supabase } from "../supabaseClient";
-
+import Features from "./Features";
 function Home() {
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [refLink, setRefLink] = useState("");
-  const [referralCount, setReferralCount] = useState(0);
-  const [userCode, setUserCode] = useState("");
-
-  // Detect referral code in URL
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get("ref");
-    if (ref) localStorage.setItem("referred_by", ref);
-  }, []);
-
-  // Fetch referral count for the logged user
-  const fetchReferralCount = async (code) => {
-    const { data, error } = await supabase
-      .from("tbl_submissions")
-      .select("referral_count")
-      .eq("referral_code", code)
-      .single();
-
-    if (!error && data) setReferralCount(data.referral_count);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Swal.fire({
-        icon: "error",
-        title: "Invalid Email",
-        text: "Please enter a valid email address.",
-      });
-      return;
-    }
-    if (!email.trim()) {
-      Swal.fire({
-        icon: "warning",
-        title: "Email Required",
-        text: "Please enter your email before submitting.",
-      });
-      return;
-    }
-
-    const referredBy = localStorage.getItem("referred_by");
-    const newCode = crypto.randomUUID().slice(0, 8);
-
-    // Insert new user
-    const userIP = await fetch("https://api.ipify.org?format=json")
-      .then((res) => res.json())
-      .then((data) => data.ip);
-
-    const { error } = await supabase.from("tbl_submissions").insert([
-      {
-        email,
-        referral_code: newCode,
-        referred_by: referredBy || null,
-        referral_count: 0,
-        ip_address: userIP,
-      },
-    ]);
-    setLoading(false);
-    if (error) {
-      console.error("Error submitting:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Submission Failed",
-        text: "Something went wrong. Please try again.",
-      });
-      return;
-    }
-    if (error && error.message.includes("duplicate")) {
-      Swal.fire({
-        icon: "error",
-        title: "Duplicate Email",
-        text: "This email has already joined the giveaway.",
-      });
-      return;
-    }
-    // 🔥 Update the referral count for referrer
-    if (referredBy) {
-      const { data: referrerData, error: referrerError } = await supabase
-        .from("tbl_submissions")
-        .select("referral_count")
-        .eq("referral_code", referredBy)
-        .single();
-
-      if (!referrerError && referrerData) {
-        const newCount = (referrerData.referral_count || 0) + 1;
-
-        const { error: updateError } = await supabase
-          .from("tbl_submissions")
-          .update({ referral_count: newCount })
-          .eq("referral_code", referredBy);
-
-        if (updateError)
-          console.error("Error updating referral count:", updateError);
-      }
-    }
-
-    // Generate user referral link
-    const link = `${window.location.origin}/?ref=${newCode}`;
-    setRefLink(link);
-    setUserCode(newCode);
-    setEmail("");
-    await fetchReferralCount(newCode);
-
-    Swal.fire({
-      icon: "success",
-      title: "🎉 Submission Successful!",
-      html: `
-        <p>Thank you for joining! Your referral link:</p>
-        <a href="${link}" target="_blank" class="text-blue-500 font-semibold">${link}</a>
-        <br><br>
-      `,
-      showConfirmButton: true,
-      confirmButtonText: "Copy Link",
-      confirmButtonColor: "#6366f1",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigator.clipboard.writeText(link);
-        Swal.fire({
-          icon: "success",
-          title: "Copied!",
-          text: "Your referral link has been copied to clipboard.",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (userCode) fetchReferralCount(userCode);
-  }, [userCode]);
-
   return (
     <main className="flex flex-col items-center justify-center text-center min-h-screen bg-white dark:bg-gray-900">
       <section className="min-h-[90vh] flex items-center justify-center p-8">
         <div className="max-w-4xl text-center">
           <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-black dark:text-white">
-            Connect. Share. <span className="text-[#6366f1]">Win MBs.</span>
+            Create. Blend. <span className="text-[#6366f1]">PaletteKit.</span>
           </h1>
 
           <p className="text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
-            Submit your email to join our giveaway. Invite friends using your
-            link and increase your chances to win shareable data!
+            Discover stunning color palettes instantly with PaletteKit — your
+            smart companion for designers, developers, and creatives. Generate,
+            save, and share palettes effortlessly.
           </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col md:flex-row gap-6 justify-center items-center"
+          <button
+            type="button"
+            id="autoPromptButton"
+            className="bg-[#6366f1] text-white font-extrabold py-4 px-10 rounded-xl text-xl hover:bg-red-500 transition duration-300 shadow-xl shadow-accent-main/50"
           >
-            <input
-              type="email"
-              placeholder="Enter your email..."
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full md:w-96 p-4 text-lg rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#6366f1] transition duration-200"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              id="autoPromptButton"
-              className="bg-[#6366f1] text-white font-extrabold py-4 px-10 rounded-xl text-xl hover:bg-red-500 transition duration-300 shadow-xl shadow-accent-main/50"
-            >
-              {loading ? "Submitting..." : "Submit"}
-            </button>
-          </form>
+            Generate Palette
+          </button>
         </div>
       </section>
+
       {/* ======= Notice Section ======= */}
-      <section className="w-full py-10 px-6 bg-gray-100 dark:bg-gray-800 border-t border-b border-gray-300 dark:border-gray-700">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#6366f1]">
-            📢 Latest Announcement
-          </h2>
-
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-            <span className="font-semibold">New giveaway period:</span> October
-            15–31, 2025 🎉 Invite your friends and increase your chances to win
-            up to{" "}
-            <span className="font-bold text-[#6366f1]">
-              5GB shareable data!
-            </span>
-          </p>
-
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-md p-6 mt-6">
-            <ul className="text-gray-700 dark:text-gray-300 text-left space-y-3">
-              <li>
-                🏆 <strong>Weekly Winners</strong> will be announced every
-                Friday at 6PM.
-              </li>
-              <li>
-                🚫 <strong>No self-referrals</strong> — multiple entries under
-                the same name or email will be disqualified.
-              </li>
-              <li>
-                📬 Winners will be contacted via the email they registered with.
-              </li>
-              <li>
-                💡 Tip: The more unique referrals you make, the higher your
-                chance of winning!
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      <Features />
     </main>
   );
 }
