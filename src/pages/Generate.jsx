@@ -19,7 +19,9 @@ export default function Generate() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/palette?q=${encodeURIComponent(query)}`
+        `https://itzmegelo-backend.onrender.com/palette?q=${encodeURIComponent(
+          query
+        )}`
       );
 
       // If the backend itself returns a non-OK response
