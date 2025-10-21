@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/ui/Navbar";
 import Home from "./pages/Home";
-import Winners from "./pages/Winners";
+import Generate from "./pages/Generate";
 import AboutUs from "./pages/AboutUs";
 import { useState, useEffect } from "react";
 
@@ -31,7 +31,7 @@ function App() {
         <main className="min-h-screen bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/winners" element={<Winners />} />
+            <Route path="/generate" element={<Generate />} />
             <Route path="/aboutus" element={<AboutUs />} />
           </Routes>
         </main>

@@ -24,7 +24,7 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="py-20 bg-white dark:bg-gray-900">
+    <section id="features" className="bg-white dark:bg-gray-900 mb-6 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="lg:text-center">
