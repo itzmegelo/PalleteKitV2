@@ -5,16 +5,16 @@ function AboutUs() {
     <main className="flex flex-col items-center justify-center text-center p-6 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <section className="max-w-4xl mx-auto py-16">
         <h1 className="text-6xl md:text-7xl font-black mb-8 leading-tight">
-          About <span className="text-[#6366f1]">Share&Win</span>
+          About <span className="text-[#6366f1]">PaletteKit</span>
         </h1>
 
         <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
           Welcome to{" "}
-          <span className="font-semibold text-[#6366f1]">Share&Win</span> — a
-          fun and rewarding way to connect with friends, share your referral
-          link, and earn shareable mobile data rewards! Every week, lucky
-          participants are randomly selected to win MBs based on their
-          engagement and referrals.
+          <span className="font-semibold text-[#6366f1]">PaletteKit</span> —
+          your creative companion for discovering and generating beautiful color
+          palettes in seconds. Whether you're a designer, developer, or creative
+          enthusiast, PaletteKit helps you bring your ideas to life with
+          perfectly harmonized colors.
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 mt-12">
@@ -23,14 +23,12 @@ function AboutUs() {
               How It Works
             </h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
-              <li>Submit your email to join the giveaway.</li>
-              <li>Receive your personal referral link after joining.</li>
+              <li>Enter a keyword, theme, or color name to start.</li>
               <li>
-                Share your link — each sign-up increases your chance to win!
+                PaletteKit instantly generates color combinations for you.
               </li>
-              <li>
-                Winners are chosen weekly and featured on our leaderboard.
-              </li>
+              <li>Preview, copy, and save your favorite palettes.</li>
+              <li>Perfect for UI design, branding, and creative projects.</li>
             </ul>
           </div>
 
@@ -39,11 +37,12 @@ function AboutUs() {
               Our Mission
             </h3>
             <p className="text-gray-600 dark:text-gray-300">
-              We believe in rewarding community engagement.{" "}
-              <span className="font-semibold text-[#6366f1]">Share&Win</span>{" "}
-              promotes sharing, connection, and fair rewards — giving students
-              and users alike a chance to stay connected without worrying about
-              data limits.
+              At{" "}
+              <span className="font-semibold text-[#6366f1]">PaletteKit</span>,
+              our mission is to simplify color inspiration. We believe design
+              should be intuitive, beautiful, and accessible to everyone. Our
+              goal is to empower creators with smart, AI-driven color discovery
+              tools that spark creativity and innovation.
             </p>
           </div>
         </div>
@@ -53,7 +52,7 @@ function AboutUs() {
             href="/"
             className="bg-[#6366f1] hover:bg-indigo-500 text-white font-semibold py-4 px-10 rounded-xl text-lg shadow-lg transition duration-300"
           >
-            Join the Giveaway
+            Try PaletteKit
           </a>
         </div>
       </section>
