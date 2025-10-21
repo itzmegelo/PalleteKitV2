@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { Copy } from "lucide-react";
+import ColorBox from "../components/ColorBox";
 export default function Generate() {
   const [query, setQuery] = useState("");
   const [palettes, setPalettes] = useState([]);
@@ -7,18 +8,54 @@ export default function Generate() {
   const [error, setError] = useState("");
 
   const handleSearch = async () => {
-    if (!query.trim()) return;
+    if (!query.trim()) {
+      setError("Please enter a color name.");
+      return;
+    }
 
     setLoading(true);
     setError("");
+    setPalettes([]);
+
     try {
       const res = await fetch(
-        `/api/palette/search?q=${query}`
+        `http://localhost:5000/palette?q=${encodeURIComponent(query)}`
       );
+
+      // If the backend itself returns a non-OK response
+      if (!res.ok) {
+        let msg = `Server error: ${res.status}`;
+        try {
+          const errData = await res.json();
+          msg = errData.error || msg;
+        } catch (_) {}
+        throw new Error(msg);
+      }
+
       const data = await res.json();
+
+      // ✅ Check if backend returned an error field
+      if (data.error) {
+        if (data.error.includes("502")) {
+          throw new Error(
+            "The ColorMagic service is temporarily unavailable (502). Please try again later."
+          );
+        } else {
+          throw new Error(data.error);
+        }
+      }
+
+      // ✅ Check if response is empty
+      if (!data || (Array.isArray(data) && data.length === 0)) {
+        throw new Error("No palettes found for that color.");
+      }
+
+      // ✅ Success — update state
       setPalettes(data);
     } catch (err) {
-      setError("Failed to fetch palettes. Try again.");
+      // Catch all errors — network, parsing, or backend
+      console.error("Palette search error:", err);
+      setError(err.message || "Something went wrong. Try again later.");
     } finally {
       setLoading(false);
     }
@@ -29,6 +66,11 @@ export default function Generate() {
       <h1 className="text-5xl font-black mb-6 text-black dark:text-white">
         Generate <span className="text-primary">Color Palettes</span>
       </h1>
+      <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
+        Instantly create stunning color palettes based on any keyword or mood.
+        Perfect for designers, developers, and creatives looking for
+        inspiration.
+      </p>
 
       {/* === Search Bar === */}
       <div className="flex justify-center mb-10">
@@ -61,11 +103,7 @@ export default function Generate() {
           >
             <div className="flex h-32">
               {palette.colors.map((color, i) => (
-                <div
-                  key={i}
-                  className="flex-1"
-                  style={{ backgroundColor: color }}
-                ></div>
+                <ColorBox key={i} color={color} />
               ))}
             </div>
             <p className="py-4 text-gray-700 dark:text-gray-300 font-medium">
