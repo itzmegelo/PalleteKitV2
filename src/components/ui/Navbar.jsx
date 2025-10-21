@@ -19,6 +19,7 @@ export default function Navbar({ theme, toggleTheme }) {
             href="/"
             className="text-3xl font-extrabold text-black dark:text-white"
           >
+            <img src="/favlogo.png" alt="Logo" className="inline-block w-20 h-18 mr-2 -mt-1" />
             Pallete<span className="text-[#6366f1]">Kit</span>
           </a>
 
