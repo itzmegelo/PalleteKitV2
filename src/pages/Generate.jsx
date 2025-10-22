@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Copy } from "lucide-react";
+import Swal from "sweetalert2";
 import ColorBox from "../components/ColorBox";
+
 export default function Generate() {
   const [query, setQuery] = useState("");
   const [palettes, setPalettes] = useState([]);
@@ -17,6 +19,17 @@ export default function Generate() {
     setError("");
     setPalettes([]);
 
+    // 💡 Show loading SweetAlert dialog
+    Swal.fire({
+      title: "Generating palettes...",
+      text: "Please wait while we fetch beautiful colors for you 🎨",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
       const res = await fetch(
         `https://itzmegelo-backend.onrender.com/palette?q=${encodeURIComponent(
@@ -24,7 +37,6 @@ export default function Generate() {
         )}`
       );
 
-      // If the backend itself returns a non-OK response
       if (!res.ok) {
         let msg = `Server error: ${res.status}`;
         try {
@@ -36,7 +48,6 @@ export default function Generate() {
 
       const data = await res.json();
 
-      // ✅ Check if backend returned an error field
       if (data.error) {
         if (data.error.includes("502")) {
           throw new Error(
@@ -47,21 +58,27 @@ export default function Generate() {
         }
       }
 
-      // ✅ Check if response is empty
       if (!data || (Array.isArray(data) && data.length === 0)) {
         throw new Error("No palettes found for that color.");
       }
 
-      // ✅ Success — update state
+      // ✅ Update state
       setPalettes(data);
+
+      // 💡 Add small delay before closing SweetAlert (for smoother UX)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (err) {
-      // Catch all errors — network, parsing, or backend
       console.error("Palette search error:", err);
       setError(err.message || "Something went wrong. Try again later.");
+
+      // Optional: you could add another SweetAlert for errors here
+      // Swal.fire({ icon: "error", title: "Oops!", text: err.message });
     } finally {
       setLoading(false);
+      Swal.close(); // 💡 Close SweetAlert after delay
     }
   };
+
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-900 text-center px-4 py-16">
@@ -125,7 +142,6 @@ export default function Generate() {
         ))}
       </section>
 
-      {/* === Empty State === */}
       {!loading && palettes.length === 0 && !error && (
         <p className="text-gray-500 dark:text-gray-400 mt-20">
           Try searching for “yellow”, “pastel”, or “summer”.
