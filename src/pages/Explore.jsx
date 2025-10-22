@@ -41,6 +41,40 @@ export default function Explore() {
             Shades of Yellow
           </p>
         </div>
+        <div className="rounded-xl overflow-hidden shadow-lg border dark:border-gray-700">
+          <div className="flex h-32">
+            <div className="flex-1 bg-[#6fbe8d]"></div>
+            <div className="flex-1 bg-[#9edf9a]"></div>
+            <div className="flex-1 bg-[#d0f3be]"></div>
+            <div className="flex-1 bg-[#f4f1c8]"></div>
+            <div className="flex-1 bg-[#f9c8ae]"></div>
+          </div>
+          <p className="py-4 text-gray-700 dark:text-gray-300">
+            Green Lillypad
+          </p>
+        </div>
+        <div className="rounded-xl overflow-hidden shadow-lg border dark:border-gray-700">
+          <div className="flex h-32">
+            <div className="flex-1 bg-[#060047]"></div>
+            <div className="flex-1 bg-[#090070]"></div>
+            <div className="flex-1 bg-[#15008f]"></div>
+            <div className="flex-1 bg-[#0025e0]"></div>
+            <div className="flex-1 bg-[#9c00cc]"></div>
+          </div>
+          <p className="py-4 text-gray-700 dark:text-gray-300">
+            Blue Purple Dream
+          </p>
+        </div>
+        <div className="rounded-xl overflow-hidden shadow-lg border dark:border-gray-700">
+          <div className="flex h-32">
+            <div className="flex-1 bg-[#1f1f3d]"></div>
+            <div className="flex-1 bg-[#3a2c6d]"></div>
+            <div className="flex-1 bg-[#5f5e9c]"></div>
+            <div className="flex-1 bg-[#a58adb]"></div>
+            <div className="flex-1 bg-[#f5a524]"></div>
+          </div>
+          <p className="py-4 text-gray-700 dark:text-gray-300">Purple Glitch</p>
+        </div>
       </div>
     </section>
   );

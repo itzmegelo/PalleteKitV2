@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Generate from "./pages/Generate";
 import AboutUs from "./pages/AboutUs";
 import { useState, useEffect } from "react";
+import Footer from "./components/Footer";
 
 function App() {
   // Load theme from localStorage if available
@@ -35,6 +36,7 @@ function App() {
             <Route path="/aboutus" element={<AboutUs />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </BrowserRouter>
   );
