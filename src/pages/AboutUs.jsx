@@ -18,9 +18,9 @@ function AboutUs() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 mt-12">
-          <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-2xl shadow-lg text-left">
-            <h3 className="text-2xl font-bold text-[#6366f1] mb-3">
-              How It Works
+          <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-2xl shadow-lg text-left transition duration-300 hover:shadow-[#6366f1]/50">
+            <h3 className="text-2xl font-bold text-white mb-3">
+              How It <span className="text-[#6366f1]">Works</span>
             </h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
               <li>Enter a keyword, theme, or color name to start.</li>
@@ -32,9 +32,9 @@ function AboutUs() {
             </ul>
           </div>
 
-          <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-2xl shadow-lg text-left">
-            <h3 className="text-2xl font-bold text-[#6366f1] mb-3">
-              Our Mission
+          <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-2xl shadow-lg text-left transition duration-300 hover:shadow-[#6366f1]/50">
+            <h3 className="text-2xl font-bold text-white mb-3">
+              Our <span className="text-[#6366f1]">Mission</span>
             </h3>
             <p className="text-gray-600 dark:text-gray-300">
               At{" "}
