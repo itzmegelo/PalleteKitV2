@@ -14,7 +14,7 @@ function Home() {
       <section className="min-h-[90vh] flex items-center justify-center p-8">
         <div className="max-w-4xl text-center">
           <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-black dark:text-white">
-            Create. Blend. <span className="text-primary">PaletteKit.</span> 
+            Create<span className="text-primary">.</span> Blend<span className="text-primary">.</span> <span className="text-primary">PaletteKit.</span> 
           </h1>
 
           <p className="text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
