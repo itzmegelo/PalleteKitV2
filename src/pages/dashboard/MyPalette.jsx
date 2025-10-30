@@ -162,7 +162,7 @@ export default function MyPalette() {
           You haven’t created any palettes yet 🎨
         </p>
       ) : (
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-6xl mx-auto">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-6xl">
           {palettes.map((palette) => (
             <div
               key={palette.id}

@@ -15,6 +15,7 @@ import SignUp from "./pages/auth/SignUp";
 import DashboardHome from "./pages/dashboard/Dashboard";
 import MyPalette from "./pages/dashboard/MyPalette";
 import Browse from "./pages/dashboard/Browse";
+import Profile from "./pages/dashboard/Profile";
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -101,6 +102,14 @@ function App() {
             element={
               <DashboardLayout theme={theme} toggleTheme={toggleTheme}>
                 <Browse />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <DashboardLayout theme={theme} toggleTheme={toggleTheme}>
+                <Profile />
               </DashboardLayout>
             }
           />

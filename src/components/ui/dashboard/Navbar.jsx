@@ -13,6 +13,7 @@ export default function Navbar({ theme, toggleTheme }) {
     { name: "Home", href: "/dashboard" },
     { name: "Browse", href: "/browse" },
     { name: "My Palette", href: "/mypalette" },
+    // { name: "Profile", href: "/profile" },
   ];
 
   const handleSignOut = async () => {

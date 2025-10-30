@@ -33,6 +33,7 @@ export default function SignUp() {
     }
 
     try {
+      // 1️⃣ Sign up the user
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -41,23 +42,36 @@ export default function SignUp() {
         },
       });
 
-      if (error) {
-        setStatusMessage(error.message);
-        setStatusType("error");
-      } else {
-        setStatusMessage(
-          "Account created successfully! Check your email for confirmation."
-        );
-        setStatusType("success");
-        console.log("User created:", data);
-      }
+      if (error) throw error;
+
+      // 2️⃣ Insert user data into tbl_user
+      // Use data.user.id from Supabase Auth
+      const { user } = data; // Supabase v2: data.user
+      const { error: insertError } = await supabase.from("tbl_users").insert([
+        {
+          user_id: user.id, // use auth-generated id
+          email: user.email,
+          username: displayName,
+          phone: phone,
+          created_at: new Date(),
+        },
+      ]);
+
+      if (insertError) throw insertError;
+
+      setStatusMessage(
+        "Account created successfully! Check your email for confirmation."
+      );
+      setStatusType("success");
+      console.log("User created:", data);
     } catch (err) {
-      setStatusMessage("An unexpected error occurred.");
+      setStatusMessage(err.message || "An unexpected error occurred.");
       setStatusType("error");
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="font-sans min-h-screen flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-900">
