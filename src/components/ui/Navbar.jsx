@@ -19,7 +19,7 @@ export default function Navbar({ theme, toggleTheme }) {
             href="/"
             className="text-3xl font-extrabold text-black dark:text-white"
           >
-            Pallete<span className="text-[#6366f1]">Kit</span>
+            Palette<span className="text-[#6366f1]">Kit</span>
           </a>
 
           {}

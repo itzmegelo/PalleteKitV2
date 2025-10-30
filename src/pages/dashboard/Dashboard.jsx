@@ -1,6 +1,7 @@
 import React from "react";
 import { useUser } from "../../context/UserContext";
 import { Palette, Share2, Smile, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const { user } = useUser();
@@ -32,7 +33,10 @@ export default function Dashboard() {
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* My Palettes */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-indigo-500 flex items-center justify-between dark:bg-gray-800">
+        <a
+          href="/mypalette"
+          className="block bg-white p-6 rounded-xl shadow-lg border-l-4 border-indigo-500 flex items-center justify-between dark:bg-gray-800 hover:shadow-xl hover:scale-[1.02] transition-all duration-200"
+        >
           <div>
             <p className="text-sm font-medium text-gray-500 uppercase dark:text-gray-400">
               My Palettes
@@ -45,7 +49,7 @@ export default function Dashboard() {
           <div className="bg-indigo-100 text-indigo-600 p-4 rounded-full">
             <Palette className="h-10 w-10" />
           </div>
-        </div>
+        </a>
 
         {/* Shared Palettes */}
         <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500 flex items-center justify-between dark:bg-gray-800">

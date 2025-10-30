@@ -13,7 +13,8 @@ import SignUp from "./pages/auth/SignUp";
 
 // dashboard pages
 import DashboardHome from "./pages/dashboard/Dashboard";
-import Palletes from "./pages/dashboard/Palletes";
+import MyPalette from "./pages/dashboard/MyPalette";
+import Browse from "./pages/dashboard/Browse";
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -88,10 +89,18 @@ function App() {
             }
           />
           <Route
-            path="/dashboard/palletes"
+            path="/mypalette"
             element={
               <DashboardLayout theme={theme} toggleTheme={toggleTheme}>
-                <Palletes />
+                <MyPalette />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/browse"
+            element={
+              <DashboardLayout theme={theme} toggleTheme={toggleTheme}>
+                <Browse />
               </DashboardLayout>
             }
           />
