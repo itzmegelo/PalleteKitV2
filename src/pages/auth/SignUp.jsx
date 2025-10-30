@@ -37,7 +37,7 @@ export default function SignUp() {
         email,
         password,
         options: {
-          data: { display_name: displayName, phone_number: phone },
+          data: { display_name: displayName, phone: phone },
         },
       });
 
@@ -125,6 +125,25 @@ export default function SignUp() {
                 placeholder="Enter phone number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm dark:bg-white/5 dark:border-gray-700"
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm dark:bg-white/5 dark:border-gray-700"
                 required
               />
