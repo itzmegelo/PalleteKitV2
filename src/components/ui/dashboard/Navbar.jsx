@@ -31,10 +31,10 @@ export default function Navbar({ theme, toggleTheme }) {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <a
-            href="/"
-            className="text-xl font-extrabold text-black dark:text-white"
+            href="/dashboard"
+            className="text-3xl font-extrabold text-black dark:text-white"
           >
-            Dashboard
+            Palette<span className="text-[#6366f1]">Kit</span>
           </a>
 
           {/* Desktop Nav */}
