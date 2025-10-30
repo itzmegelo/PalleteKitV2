@@ -106,14 +106,14 @@ export default function SignIn() {
             </div>
 
             {/* Forgot Password Link */}
-            <div className="flex items-center justify-end">
+            {/* <div className="flex items-center justify-end">
               <a
                 href="/"
                 className="text-xs font-medium text-indigo-600 hover:text-indigo-700 transition duration-150 ease-in-out"
               >
                 Forgot Password?
               </a>
-            </div>
+            </div> */}
 
             {/* Sign In Button */}
             <button
