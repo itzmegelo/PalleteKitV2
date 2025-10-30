@@ -6,6 +6,7 @@ export default function Navbar({ theme, toggleTheme }) {
 
   const navItems = [
     { name: "Home", href: "/" },
+    { name: "Browse", href: "/palette/browse" },
     { name: "Generate", href: "/generate" },
     { name: "About Us", href: "/aboutus" },
   ]

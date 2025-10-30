@@ -10,6 +10,7 @@ import Generate from "./pages/Generate";
 import AboutUs from "./pages/AboutUs";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
+import Browser from "./pages/Browse";
 
 // dashboard pages
 import DashboardHome from "./pages/dashboard/Dashboard";
@@ -76,6 +77,14 @@ function App() {
             element={
               <MainLayout theme={theme} toggleTheme={toggleTheme}>
                 <SignUp />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/palette/browse"
+            element={
+              <MainLayout theme={theme} toggleTheme={toggleTheme}>
+                <Browser />
               </MainLayout>
             }
           />
