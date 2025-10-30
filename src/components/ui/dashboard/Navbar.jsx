@@ -1,14 +1,14 @@
-import { useState } from "react"
+import { useState } from "react";
 import { Sun, Moon, Menu, X, UserRound } from "lucide-react";
 
 export default function Navbar({ theme, toggleTheme }) {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Generate", href: "/generate" },
+    { name: "Home", href: "/dashboard" },
+    { name: "Pallete", href: "/pallete" },
     { name: "About Us", href: "/aboutus" },
-  ]
+  ];
 
   return (
     <nav className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 sticky top-0 z-50 w-full backdrop-blur-sm transition-colors duration-300">
@@ -17,9 +17,9 @@ export default function Navbar({ theme, toggleTheme }) {
           {/* Logo */}
           <a
             href="/"
-            className="text-3xl font-extrabold text-black dark:text-white"
+            className="text-xl font-extrabold text-black dark:text-white"
           >
-            Pallete<span className="text-[#6366f1]">Kit</span>
+            Dashboard
           </a>
 
           {}
@@ -43,12 +43,7 @@ export default function Navbar({ theme, toggleTheme }) {
             >
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <a
-              href="/signin"
-              className="p-2 text-primary rounded-full dark:text-white"
-            >
-              <UserRound size={18} />
-            </a>
+           
             {/* Mobile Menu Button */}
             <button
               className="md:hidden p-2 rounded-md text-[#6366f1] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#6366f1]"

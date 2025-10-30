@@ -1,43 +1,102 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/ui/Navbar";
+import { useState, useEffect } from "react";
+import { UserProvider } from "./context/UserContext";
+
+import MainLayout from "./layouts/MainLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
+
 import Home from "./pages/Home";
 import Generate from "./pages/Generate";
 import AboutUs from "./pages/AboutUs";
-import { useState, useEffect } from "react";
-import Footer from "./components/Footer";
+import SignIn from "./pages/auth/SignIn";
+import SignUp from "./pages/auth/SignUp";
+
+// dashboard pages
+import DashboardHome from "./pages/dashboard/Dashboard";
+import Palletes from "./pages/dashboard/Palletes";
 
 function App() {
-  // Load theme from localStorage if available
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "light";
   });
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => {
-      const newTheme = prevTheme === "light" ? "dark" : "light";
-      localStorage.setItem("theme", newTheme); // save theme
+    setTheme((prev) => {
+      const newTheme = prev === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
       return newTheme;
     });
   };
 
-  // Optional: sync localStorage if user changed system preferences
   useEffect(() => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (
     <BrowserRouter>
-      <div className={theme}>
-        <Navbar theme={theme} toggleTheme={toggleTheme} />
-        <main className="min-h-screen bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/generate" element={<Generate />} />
-            <Route path="/aboutus" element={<AboutUs />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      {/* 🌐 Public Pages */}
+      <UserProvider>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <MainLayout theme={theme} toggleTheme={toggleTheme}>
+                <Home />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/generate"
+            element={
+              <MainLayout theme={theme} toggleTheme={toggleTheme}>
+                <Generate />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/aboutus"
+            element={
+              <MainLayout theme={theme} toggleTheme={toggleTheme}>
+                <AboutUs />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/signin"
+            element={
+              <MainLayout theme={theme} toggleTheme={toggleTheme}>
+                <SignIn />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <MainLayout theme={theme} toggleTheme={toggleTheme}>
+                <SignUp />
+              </MainLayout>
+            }
+          />
+
+          {/* 💼 Dashboard Pages */}
+          <Route
+            path="/dashboard"
+            element={
+              <DashboardLayout theme={theme} toggleTheme={toggleTheme}>
+                <DashboardHome />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/dashboard/palletes"
+            element={
+              <DashboardLayout theme={theme} toggleTheme={toggleTheme}>
+                <Palletes />
+              </DashboardLayout>
+            }
+          />
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 }
