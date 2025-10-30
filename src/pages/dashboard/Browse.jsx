@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { supabase } from "../../supabaseClient";
-import { Sparkles, Heart, Search, Filter, BookA } from "lucide-react";
+import { Sparkles, Heart, Search, Filter, BookOpen } from "lucide-react";
 import ColorBox from "../../components/ColorBox";
 
 export default function Browse() {
@@ -9,25 +9,44 @@ export default function Browse() {
   const [palettes, setPalettes] = useState([]);
   const [filteredPalettes, setFilteredPalettes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userReactions, setUserReactions] = useState([]); // palette ids reacted by this user
 
-  // Search and filter state
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("newest"); // newest | oldest | mostLiked
 
-  // Fetch palettes
+  // Fetch palettes + reactions
   const fetchPalettes = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+
+      // Fetch palettes
+      const { data: palettesData, error: palettesError } = await supabase
         .from("tbl_palettes")
         .select("*")
         .order("created_at", { ascending: false });
+      if (palettesError) throw palettesError;
 
-        console.log(data)
+      // Fetch reactions count per palette
+      const { data: reactionsData, error: reactionsError } = await supabase
+        .from("tbl_palette_reactions")
+        .select("palette_id, user_id");
+      if (reactionsError) throw reactionsError;
 
-      if (error) throw error;
+      // Map palette id → reaction count
+      const reactionCounts = reactionsData.reduce((acc, r) => {
+        acc[r.palette_id] = (acc[r.palette_id] || 0) + 1;
+        return acc;
+      }, {});
 
-      const formatted = data.map((item) => ({
+      // Reactions by current user
+      const reactedIds = user
+        ? reactionsData
+            .filter((r) => r.user_id === user.id)
+            .map((r) => r.palette_id)
+        : [];
+
+      // Format palettes
+      const formatted = palettesData.map((item) => ({
         id: item.id,
         name: item.paletteName,
         colors: [
@@ -37,14 +56,15 @@ export default function Browse() {
           item.colorFour,
           item.colorFive,
         ].filter(Boolean),
-        reactions: item.reactions || 0,
+        reactions: reactionCounts[item.id] || 0,
         created_at: item.created_at,
-        creator: item.user_name, // ✅ ensure this matches Supabase column
+        creator: item.user_name,
+        user_id: item.user_id,
       }));
-
 
       setPalettes(formatted);
       setFilteredPalettes(formatted);
+      setUserReactions(reactedIds);
     } catch (err) {
       console.error("Error fetching palettes:", err.message);
     } finally {
@@ -52,24 +72,22 @@ export default function Browse() {
     }
   };
 
-  // Filter + search logic
+  // Filter + search
   useEffect(() => {
     let updated = [...palettes];
 
-    // Search filter
     if (searchTerm.trim()) {
       updated = updated.filter((p) =>
         p.name?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Sort filter
     if (filter === "mostLiked") {
       updated.sort((a, b) => b.reactions - a.reactions);
     } else if (filter === "oldest") {
       updated.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
     } else {
-      updated.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // newest
+      updated.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     }
 
     setFilteredPalettes(updated);
@@ -78,6 +96,26 @@ export default function Browse() {
   useEffect(() => {
     fetchPalettes();
   }, [user?.id]);
+
+  const handleReact = async (palette) => {
+    if (!user?.id) return alert("Login to react!");
+    if (palette.user_id === user.id) return; // cannot react to own
+    if (userReactions.includes(palette.id)) return; // already reacted
+
+    // Insert reaction
+    const { error } = await supabase
+      .from("tbl_palette_reactions")
+      .insert([{ palette_id: palette.id, user_id: user.id }]);
+    if (error) return console.error("Error reacting:", error);
+
+    // Update local state
+    setUserReactions([...userReactions, palette.id]);
+    setPalettes((prev) =>
+      prev.map((p) =>
+        p.id === palette.id ? { ...p, reactions: (p.reactions || 0) + 1 } : p
+      )
+    );
+  };
 
   return (
     <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -91,16 +129,14 @@ export default function Browse() {
             Explore beautiful color palettes shared by creators.
           </p>
         </div>
-
         <div className="hidden sm:flex items-center gap-2 bg-indigo-100 text-indigo-600 dark:bg-indigo-600/20 px-4 py-2 rounded-lg font-medium">
           <Sparkles className="h-5 w-5" />
           <span>Inspire Mode</span>
         </div>
       </div>
 
-      {/* 🔍 Search & Filter */}
+      {/* Search & Filter */}
       <div className="flex items-center justify-between flex-wrap gap-2 mb-6">
-        {/* Search Input */}
         <div className="relative flex-1 min-w-[150px]">
           <Search className="absolute left-3 top-2 h-4 w-4 text-gray-400" />
           <input
@@ -111,8 +147,6 @@ export default function Browse() {
             className="w-full pl-9 pr-3 py-1.5 rounded-md border text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
           />
         </div>
-
-        {/* Filter Dropdown */}
         <div className="flex items-center gap-1">
           <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           <select
@@ -137,35 +171,47 @@ export default function Browse() {
           No palettes found 🎨
         </p>
       ) : (
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-6xl mx-auto">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
           {filteredPalettes.map((palette) => (
             <div
               key={palette.id}
               className="relative rounded-xl overflow-hidden shadow-lg border dark:border-gray-700 hover:scale-[1.02] transition-transform"
             >
-              {/* Color Preview */}
               <div className="flex h-32 relative">
                 {palette.colors.map((color, i) => (
                   <ColorBox key={i} color={color} />
                 ))}
-                {/* 👤 Creator Name (bottom-left overlay) */}
+
+                {/* Creator Name */}
                 <div className="absolute bottom-2 left-2 flex items-center gap-1.5 bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
-                  <BookA className="h-4 w-4 text-red-600" />
+                  <BookOpen className="h-4 w-4 text-indigo-600" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
                     {palette.creator}
                   </span>
                 </div>
 
-                {/* ❤️ Reaction Count */}
-                <div className="absolute bottom-2 right-2 flex items-center gap-1.5 bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
-                  <Heart className="h-4 w-4 text-red-600" />
+                {/* Reaction Count */}
+                <button
+                  onClick={() => handleReact(palette)}
+                  disabled={
+                    palette.user_id === user?.id ||
+                    userReactions.includes(palette.id)
+                  }
+                  className="absolute bottom-2 right-2 flex items-center gap-1.5 bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-full shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Heart
+                    className={`h-4 w-4 ${
+                      userReactions.includes(palette.id)
+                        ? "text-red-600"
+                        : "text-gray-400"
+                    }`}
+                  />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                    {palette.reactions ?? 0}
+                    {palette.reactions}
                   </span>
-                </div>
+                </button>
               </div>
 
-              {/* Palette Title */}
               <p className="py-4 text-gray-700 dark:text-gray-300 font-medium text-center">
                 {palette.name || "Untitled Palette"}
               </p>

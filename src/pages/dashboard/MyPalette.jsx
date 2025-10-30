@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { supabase } from "../../supabaseClient";
-import { Sparkles, Plus, X , Heart} from "lucide-react";
+import { Sparkles, Plus, X, Heart } from "lucide-react";
 import ColorBox from "../../components/ColorBox";
 
 export default function MyPalette() {
@@ -51,7 +51,6 @@ export default function MyPalette() {
       return;
     }
 
-    console.log("Palette saved:", data);
     setShowModal(false);
     setPaletteName("");
     setColors(["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF"]);
@@ -59,22 +58,36 @@ export default function MyPalette() {
     fetchPalettes(); // refresh
   };
 
-  // fetch all user palettes
+  // fetch all user palettes with reactions
   const fetchPalettes = async () => {
     if (!user?.id) return;
 
     try {
       setLoading(true);
 
-      const { data, error } = await supabase
+      // fetch palettes
+      const { data: palettesData, error: palettesError } = await supabase
         .from("tbl_palettes")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
+      if (palettesError) throw palettesError;
 
-      if (error) throw error;
+      // fetch reactions for these palettes
+      const paletteIds = palettesData.map((p) => p.id);
+      const { data: reactionsData, error: reactionsError } = await supabase
+        .from("tbl_palette_reactions")
+        .select("palette_id")
+        .in("palette_id", paletteIds);
+      if (reactionsError) throw reactionsError;
 
-      const formatted = data.map((item) => ({
+      // count reactions per palette
+      const reactionCounts = reactionsData.reduce((acc, r) => {
+        acc[r.palette_id] = (acc[r.palette_id] || 0) + 1;
+        return acc;
+      }, {});
+
+      const formatted = palettesData.map((item) => ({
         id: item.id,
         name: item.paletteName,
         colors: [
@@ -84,9 +97,8 @@ export default function MyPalette() {
           item.colorFour,
           item.colorFive,
         ].filter(Boolean),
-        reactions: item.reactions || 0, // ✅ add this line
+        reactions: reactionCounts[item.id] || 0,
       }));
-
 
       setPalettes(formatted);
     } catch (err) {
@@ -156,22 +168,20 @@ export default function MyPalette() {
               key={palette.id}
               className="relative rounded-xl overflow-hidden shadow-lg border dark:border-gray-700 hover:scale-[1.02] transition-transform"
             >
-              {/* Color Preview */}
               <div className="flex h-32 relative">
                 {palette.colors.map((color, i) => (
                   <ColorBox key={i} color={color} />
                 ))}
 
-                {/* ✅ Reaction Count (bottom right overlay) */}
+                {/* Reaction Count */}
                 <div className="absolute bottom-2 right-2 flex items-center gap-1.5 bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
                   <Heart className="h-4 w-4 text-red-600" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                    {palette.reactions ?? 0}
+                    {palette.reactions}
                   </span>
                 </div>
               </div>
 
-              {/* Palette Title */}
               <p className="py-4 text-gray-700 dark:text-gray-300 font-medium text-center">
                 {palette.name || "Untitled Palette"}
               </p>
