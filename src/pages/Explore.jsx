@@ -10,7 +10,7 @@ export default function Explore() {
         <p className="mt-2 text-4xl leading-8 font-extrabold tracking-tight text-black dark:text-white sm:text-5xl">
           Explore Trending Palettes
         </p>
-        <p className="mt-4 max-w-2xl text-xl text-gray-700 dark:text-gray-300 lg:mx-auto">
+        <p className="mt-4 max-w-2xl text-xl text-gray-700 dark:text-gray-300 lg:mx-auto tracking-tight">
           Dive into the most popular color combinations shared by designers and
           creators worldwide. Find your next aesthetic — bold, calm, or playful
           — all in one place.

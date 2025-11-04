@@ -107,17 +107,6 @@ export default function Navbar({ theme, toggleTheme }) {
                 </Link>
               );
             })}
-
-            {/* Mobile Logout */}
-            <button
-              onClick={() => {
-                handleSignOut();
-                setMenuOpen(false);
-              }}
-              className="block w-full text-left text-red-600 font-semibold hover:text-red-700 transition-colors"
-            >
-              Log Out
-            </button>
           </div>
         </div>
       )}

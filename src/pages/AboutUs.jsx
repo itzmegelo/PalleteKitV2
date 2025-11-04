@@ -8,7 +8,7 @@ function AboutUs() {
           About <span className="text-[#6366f1]">PaletteKit</span>
         </h1>
 
-        <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+        <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto tracking-tight">
           Welcome to{" "}
           <span className="font-semibold text-[#6366f1]">PaletteKit</span> —
           your creative companion for discovering and generating beautiful color

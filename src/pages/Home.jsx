@@ -11,13 +11,15 @@ function Home() {
 
   return (
     <main className="flex flex-col items-center justify-center text-center min-h-screen bg-white dark:bg-gray-900">
-      <section className="min-h-[90vh] flex items-center justify-center p-8">
+      <section className="min-h-[90vh] flex flex-col items-center justify-center relative overflow-hidden w-full p-4">
         <div className="max-w-4xl text-center">
-          <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-black dark:text-white">
-            Create<span className="text-primary">.</span> Blend<span className="text-primary">.</span> <span className="text-primary">PaletteKit.</span> 
+          <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-black dark:text-white tracking-tight">
+            Create<span className="text-primary">.</span> Blend
+            <span className="text-primary">.</span>{" "}
+            <span className="text-primary">PaletteKit.</span>
           </h1>
 
-          <p className="text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
+          <p className="text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto tracking-tight">
             Discover stunning color palettes instantly with PaletteKit — your
             smart companion for designers, developers, and creatives. Generate,
             save, and share palettes effortlessly.
@@ -25,10 +27,19 @@ function Home() {
 
           <button
             onClick={goToAbout}
-            className="bg-transparent text-primary font-extrabold py-4 px-10 rounded-xl text-xl hover hover:bg-[#6366f1] hover:text-white transition duration-300 shadow-xl shadow-accent-main/50 border border-[#6366f1]"
+            className="bg-transparent text-primary font-extrabold py-4 px-10 rounded-xl text-xl hover:bg-[#6366f1] hover:text-white transition duration-300 shadow-xl shadow-accent-main/50 border border-[#6366f1]"
           >
             Generate Palette
           </button>
+        </div>
+
+        {/* Waving Footer */}
+        <div className="w-full absolute bottom-0 left-0">
+          <img
+            src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,2,5,30&height=100&section=footer"
+            alt="footer wave"
+            className="w-full h-auto object-cover"
+          />
         </div>
       </section>
 
