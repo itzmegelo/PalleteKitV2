@@ -3,9 +3,19 @@ import React from "react";
 export default function Explore() {
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-800 w-full text-center px-4">
-      <h2 className="text-4xl font-bold text-black dark:text-white mb-8">
-        Explore Trending Palettes
-      </h2>
+      <div className="lg:text-center mb-6">
+        <h2 className="text-base text-[#6366f1] font-semibold tracking-wide uppercase">
+          Discover Inspiration
+        </h2>
+        <p className="mt-2 text-4xl leading-8 font-extrabold tracking-tight text-black dark:text-white sm:text-5xl">
+          Explore Trending Palettes
+        </p>
+        <p className="mt-4 max-w-2xl text-xl text-gray-700 dark:text-gray-300 lg:mx-auto">
+          Dive into the most popular color combinations shared by designers and
+          creators worldwide. Find your next aesthetic — bold, calm, or playful
+          — all in one place.
+        </p>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         <div className="rounded-xl overflow-hidden shadow-lg border dark:border-gray-700">
           <div className="flex h-32">

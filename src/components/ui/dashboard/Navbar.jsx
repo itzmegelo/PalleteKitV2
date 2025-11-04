@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { Sun, Moon, Menu, X, LogOut } from "lucide-react";
 import { supabase } from "../../../supabaseClient";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useUser } from "../../../context/UserContext";
 
 export default function Navbar({ theme, toggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUser } = useUser();
 
   const navItems = [
@@ -20,7 +21,7 @@ export default function Navbar({ theme, toggleTheme }) {
     try {
       await supabase.auth.signOut();
       setUser(null);
-      navigate("/signin");
+      navigate("/");
     } catch (error) {
       console.error("Error signing out:", error.message);
     }
@@ -31,41 +32,47 @@ export default function Navbar({ theme, toggleTheme }) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <a
-            href="/dashboard"
+          <Link
+            to="/dashboard"
             className="text-3xl font-extrabold text-black dark:text-white"
           >
             Palette<span className="text-[#6366f1]">Kit</span>
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex space-x-6 items-center">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-gray-700 dark:text-gray-200 hover:text-[#6366f1] dark:hover:text-[#6366f1] transition-colors font-semibold"
-              >
-                {item.name}
-              </a>
-            ))}
-
-            {/* ✅ Log Out Button */}
-            <button
-              onClick={handleSignOut}
-              className="text-red-600 font-semibold hover:text-red-700 transition-colors"
-            >
-              Log Out
-            </button>
+            {navItems.map((item) => {
+              // ✅ Detect active route
+              const isActive = location.pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`font-semibold transition-colors ${
+                    isActive
+                      ? "text-[#6366f1] border-b-2 border-[#6366f1] pb-1"
+                      : "text-gray-700 dark:text-gray-200 hover:text-[#6366f1]"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right Controls */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-1">
             <button
               onClick={toggleTheme}
-              className="p-2 text-white rounded-full bg-[#6366f1] dark:bg-[#6366f1] hover:bg-[#5558e8] transition-colors"
+              className="p-2 text-primary rounded-full hover:bg-primary hover:text-white transition-colors"
             >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+              {theme === "dark" ? <Sun size={23} /> : <Moon size={23} />}
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="p-2 text-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+            >
+              <LogOut size={23} />
             </button>
 
             {/* Mobile Menu Button */}
@@ -79,23 +86,34 @@ export default function Navbar({ theme, toggleTheme }) {
         </div>
       </div>
 
-      {/* ✅ Mobile Menu */}
+      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700">
           <div className="px-4 py-2 space-y-2">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="block text-gray-700 dark:text-gray-200 hover:text-[#6366f1] dark:hover:text-[#6366f1] transition-colors"
-              >
-                {item.name}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isActive = location.pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`block transition-colors ${
+                    isActive
+                      ? "text-[#6366f1] font-semibold"
+                      : "text-gray-700 dark:text-gray-200 hover:text-[#6366f1]"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
 
-            {/* ✅ Mobile Logout */}
+            {/* Mobile Logout */}
             <button
-              onClick={handleSignOut}
+              onClick={() => {
+                handleSignOut();
+                setMenuOpen(false);
+              }}
               className="block w-full text-left text-red-600 font-semibold hover:text-red-700 transition-colors"
             >
               Log Out

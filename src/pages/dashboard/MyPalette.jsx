@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { supabase } from "../../supabaseClient";
-import { Sparkles, Plus, X, Heart } from "lucide-react";
+import { Plus, X, Heart } from "lucide-react";
 import ColorBox from "../../components/ColorBox";
 
 export default function MyPalette() {
@@ -20,6 +20,9 @@ export default function MyPalette() {
     "#FF00FF",
   ]);
 
+  // radio state
+  const [inputMode, setInputMode] = useState("auto"); // 'auto' (color pickers) | 'manual' (text inputs)
+
   // handle color change
   const handleColorChange = (index, value) => {
     const updated = [...colors];
@@ -27,22 +30,35 @@ export default function MyPalette() {
     setColors(updated);
   };
 
+  // generate random hex colors
+  const generateRandomColors = () =>
+    Array.from(
+      { length: 5 },
+      () =>
+        "#" +
+        Math.floor(Math.random() * 16777215)
+          .toString(16)
+          .padStart(6, "0")
+    );
+
   // save palette to supabase
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user?.id) return alert("You must be logged in!");
 
+    const finalColors = colors;
+
     const { data, error } = await supabase.from("tbl_palettes").insert([
       {
         user_id: user.id,
         user_name: user.user_metadata.display_name,
         paletteName,
-        colorOne: colors[0],
-        colorTwo: colors[1],
-        colorThree: colors[2],
-        colorFour: colors[3],
-        colorFive: colors[4],
+        colorOne: finalColors[0],
+        colorTwo: finalColors[1],
+        colorThree: finalColors[2],
+        colorFour: finalColors[3],
+        colorFive: finalColors[4],
       },
     ]);
 
@@ -54,34 +70,32 @@ export default function MyPalette() {
     setShowModal(false);
     setPaletteName("");
     setColors(["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF"]);
-
-    fetchPalettes(); // refresh
+    setInputMode("auto");
+    fetchPalettes();
   };
 
-  // fetch all user palettes with reactions
+  // fetch palettes
   const fetchPalettes = async () => {
     if (!user?.id) return;
-
     try {
       setLoading(true);
 
-      // fetch palettes
       const { data: palettesData, error: palettesError } = await supabase
         .from("tbl_palettes")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
+
       if (palettesError) throw palettesError;
 
-      // fetch reactions for these palettes
       const paletteIds = palettesData.map((p) => p.id);
       const { data: reactionsData, error: reactionsError } = await supabase
         .from("tbl_palette_reactions")
         .select("palette_id")
         .in("palette_id", paletteIds);
+
       if (reactionsError) throw reactionsError;
 
-      // count reactions per palette
       const reactionCounts = reactionsData.reduce((acc, r) => {
         acc[r.palette_id] = (acc[r.palette_id] || 0) + 1;
         return acc;
@@ -130,11 +144,6 @@ export default function MyPalette() {
             style.
           </p>
         </div>
-
-        <div className="hidden sm:flex items-center gap-2 bg-indigo-100 text-indigo-600 dark:bg-indigo-600/20 px-4 py-2 rounded-lg font-medium">
-          <Sparkles className="h-5 w-5" />
-          <span>Creator Mode</span>
-        </div>
       </div>
 
       {/* Toolbar */}
@@ -172,8 +181,6 @@ export default function MyPalette() {
                 {palette.colors.map((color, i) => (
                   <ColorBox key={i} color={color} />
                 ))}
-
-                {/* Reaction Count */}
                 <div className="absolute bottom-2 right-2 flex items-center gap-1.5 bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
                   <Heart className="h-4 w-4 text-red-600" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
@@ -181,7 +188,6 @@ export default function MyPalette() {
                   </span>
                 </div>
               </div>
-
               <p className="py-4 text-gray-700 dark:text-gray-300 font-medium text-center">
                 {palette.name || "Untitled Palette"}
               </p>
@@ -206,6 +212,7 @@ export default function MyPalette() {
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Palette Name */}
               <div>
                 <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
                   Palette Name
@@ -220,14 +227,45 @@ export default function MyPalette() {
                 />
               </div>
 
+              {/* Radio Buttons */}
               <div>
                 <label className="block text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  Choose 5 Colors
+                  Color Input Mode
                 </label>
-                <div className="grid grid-cols-5 gap-2">
-                  {colors.map((color, index) => (
-                    <div key={index} className="flex flex-col items-center">
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    <input
+                      type="radio"
+                      name="inputMode"
+                      value="auto"
+                      checked={inputMode === "auto"}
+                      onChange={() => setInputMode("auto")}
+                    />
+                    Auto (Color Pickers)
+                  </label>
+                  <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    <input
+                      type="radio"
+                      name="inputMode"
+                      value="manual"
+                      checked={inputMode === "manual"}
+                      onChange={() => setInputMode("manual")}
+                    />
+                    Manual (Text Fields)
+                  </label>
+                </div>
+              </div>
+
+              {/* Auto Mode → Color Pickers */}
+              {inputMode === "auto" && (
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-2">
+                    Choose 5 Colors
+                  </label>
+                  <div className="grid grid-cols-5 gap-2">
+                    {colors.map((color, index) => (
                       <input
+                        key={index}
                         type="color"
                         value={color}
                         onChange={(e) =>
@@ -235,10 +273,44 @@ export default function MyPalette() {
                         }
                         className="w-10 h-10 rounded-md border cursor-pointer"
                       />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Manual Mode → Text Inputs + Preview */}
+              {inputMode === "manual" && (
+                <div>
+                  <label className="block text-sm text-gray-600 dark:text-gray-300 mb-2">
+                    Enter 5 Hex Colors (e.g. #FF5733)
+                  </label>
+                  <div className="space-y-2">
+                    {colors.map((color, index) => (
+                      <input
+                        key={index}
+                        type="text"
+                        value={color}
+                        onChange={(e) =>
+                          handleColorChange(index, e.target.value)
+                        }
+                        placeholder={`Color ${index + 1}`}
+                        className="w-full p-2 rounded-md border dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                      />
+                    ))}
+                  </div>
+
+                  {/* Preview Section */}
+                  <div className="flex justify-between gap-2 mt-3">
+                    {colors.map((color, i) => (
+                      <div
+                        key={i}
+                        className="w-10 h-10 rounded-md border"
+                        style={{ backgroundColor: color }}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <button
                 type="submit"
