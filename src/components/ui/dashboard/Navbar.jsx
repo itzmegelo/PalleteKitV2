@@ -14,6 +14,7 @@ export default function Navbar({ theme, toggleTheme }) {
     { name: "Home", href: "/dashboard" },
     { name: "Browse", href: "/browse" },
     { name: "My Palette", href: "/mypalette" },
+    { name: "Api Documentation", href: "/api" },
     // { name: "Profile", href: "/profile" },
   ];
 

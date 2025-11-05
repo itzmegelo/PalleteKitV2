@@ -17,6 +17,7 @@ import DashboardHome from "./pages/dashboard/Dashboard";
 import MyPalette from "./pages/dashboard/MyPalette";
 import Browse from "./pages/dashboard/Browse";
 import Profile from "./pages/dashboard/Profile";
+import Api from "./pages/dashboard/Api";
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -119,6 +120,14 @@ function App() {
             element={
               <DashboardLayout theme={theme} toggleTheme={toggleTheme}>
                 <Profile />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/api"
+            element={
+              <DashboardLayout theme={theme} toggleTheme={toggleTheme}>
+                <Api />
               </DashboardLayout>
             }
           />
