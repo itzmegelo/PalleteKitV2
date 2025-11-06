@@ -47,7 +47,7 @@ export default function Api() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-            Developer Documentation
+            Developer Documentations
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">
             Access and manage resources via secure RESTful endpoints.
