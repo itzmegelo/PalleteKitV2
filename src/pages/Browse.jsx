@@ -129,10 +129,6 @@ export default function Browse() {
             Explore beautiful color palettes shared by creators.
           </p>
         </div>
-        <div className="hidden sm:flex items-center gap-2 bg-indigo-100 text-indigo-600 dark:bg-indigo-600/20 px-4 py-2 rounded-lg font-medium">
-          <Sparkles className="h-5 w-5" />
-          <span>Inspire Mode</span>
-        </div>
       </div>
 
       {/* Search & Filter */}
