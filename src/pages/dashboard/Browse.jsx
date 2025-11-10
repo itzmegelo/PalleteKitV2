@@ -1,20 +1,22 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useUser } from "../../context/UserContext";
 import { supabase } from "../../supabaseClient";
+import { useUser } from "../../context/UserContext";
 import { Heart, Search, Filter, BookOpen } from "lucide-react";
 import ColorBox from "../../components/ColorBox";
 
 export default function Browse() {
   const { user } = useUser();
+
+  // State
   const [palettes, setPalettes] = useState([]);
   const [filteredPalettes, setFilteredPalettes] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [userReactions, setUserReactions] = useState([]); // palette ids reacted by this user
+  const [loading, setLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("newest"); // newest | oldest | mostLiked
 
-  // Fetch palettes + reactions
+  // Fetch palettes and reactions
   const fetchPalettes = useCallback(async () => {
     try {
       setLoading(true);
@@ -26,7 +28,7 @@ export default function Browse() {
         .order("created_at", { ascending: false });
       if (palettesError) throw palettesError;
 
-      // Fetch reactions count per palette
+      // Fetch reactions
       const { data: reactionsData, error: reactionsError } = await supabase
         .from("tbl_palette_reactions")
         .select("palette_id, user_id");
@@ -70,25 +72,45 @@ export default function Browse() {
     } finally {
       setLoading(false);
     }
-  }, [user?.id]); // include any variables used inside fetchPalettes
+  }, [user]); // include user object
 
-  // Call fetchPalettes in useEffect safely
+  // Run on mount / user change
   useEffect(() => {
     fetchPalettes();
-  }, [fetchPalettes]); // safe, stable function now
+  }, [fetchPalettes]);
 
+  // Filter + search
+  useEffect(() => {
+    let updated = [...palettes];
+
+    if (searchTerm.trim()) {
+      updated = updated.filter((p) =>
+        p.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (filter === "mostLiked") {
+      updated.sort((a, b) => b.reactions - a.reactions);
+    } else if (filter === "oldest") {
+      updated.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    } else {
+      updated.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    }
+
+    setFilteredPalettes(updated);
+  }, [searchTerm, filter, palettes]);
+
+  // Handle reaction
   const handleReact = async (palette) => {
     if (!user?.id) return alert("Login to react!");
     if (palette.user_id === user.id) return; // cannot react to own
     if (userReactions.includes(palette.id)) return; // already reacted
 
-    // Insert reaction
     const { error } = await supabase
       .from("tbl_palette_reactions")
       .insert([{ palette_id: palette.id, user_id: user.id }]);
     if (error) return console.error("Error reacting:", error);
 
-    // Update local state
     setUserReactions([...userReactions, palette.id]);
     setPalettes((prev) =>
       prev.map((p) =>
@@ -137,7 +159,7 @@ export default function Browse() {
         </div>
       </div>
 
-      {/* Palette Section */}
+      {/* Palettes */}
       {loading ? (
         <p className="text-center text-gray-500 dark:text-gray-400">
           Loading palettes...
@@ -158,7 +180,7 @@ export default function Browse() {
                   <ColorBox key={i} color={color} />
                 ))}
 
-                {/* Creator Name */}
+                {/* Creator */}
                 <div className="absolute bottom-2 left-2 flex items-center gap-1.5 bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
                   <BookOpen className="h-4 w-4 text-indigo-600" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
@@ -166,7 +188,7 @@ export default function Browse() {
                   </span>
                 </div>
 
-                {/* Reaction Count */}
+                {/* Reactions */}
                 <button
                   onClick={() => handleReact(palette)}
                   disabled={
