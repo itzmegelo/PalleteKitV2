@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useUser } from "../../context/UserContext";
 import { supabase } from "../../supabaseClient";
 import { Heart, Search, Filter, BookOpen } from "lucide-react";
@@ -15,7 +15,7 @@ export default function Browse() {
   const [filter, setFilter] = useState("newest"); // newest | oldest | mostLiked
 
   // Fetch palettes + reactions
-  const fetchPalettes = async () => {
+  const fetchPalettes = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -70,32 +70,12 @@ export default function Browse() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.id]); // include any variables used inside fetchPalettes
 
-  // Filter + search
-  useEffect(() => {
-    let updated = [...palettes];
-
-    if (searchTerm.trim()) {
-      updated = updated.filter((p) =>
-        p.name?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (filter === "mostLiked") {
-      updated.sort((a, b) => b.reactions - a.reactions);
-    } else if (filter === "oldest") {
-      updated.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-    } else {
-      updated.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    }
-
-    setFilteredPalettes(updated);
-  }, [searchTerm, filter, palettes]);
-
+  // Call fetchPalettes in useEffect safely
   useEffect(() => {
     fetchPalettes();
-  }, [user?.id]);
+  }, [fetchPalettes]); // safe, stable function now
 
   const handleReact = async (palette) => {
     if (!user?.id) return alert("Login to react!");
@@ -129,7 +109,6 @@ export default function Browse() {
             Explore beautiful color palettes shared by creators.
           </p>
         </div>
-       
       </div>
 
       {/* Search & Filter */}

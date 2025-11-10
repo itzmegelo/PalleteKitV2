@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useUser } from "../../context/UserContext";
 import { supabase } from "../../supabaseClient";
 import { Plus, X, Heart } from "lucide-react";
@@ -63,8 +63,7 @@ export default function MyPalette() {
     fetchPalettes();
   };
 
-  // fetch palettes
-  const fetchPalettes = async () => {
+  const fetchPalettes = useCallback(async () => {
     if (!user?.id) return;
     try {
       setLoading(true);
@@ -74,7 +73,6 @@ export default function MyPalette() {
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
-
       if (palettesError) throw palettesError;
 
       const paletteIds = palettesData.map((p) => p.id);
@@ -82,7 +80,6 @@ export default function MyPalette() {
         .from("tbl_palette_reactions")
         .select("palette_id")
         .in("palette_id", paletteIds);
-
       if (reactionsError) throw reactionsError;
 
       const reactionCounts = reactionsData.reduce((acc, r) => {
@@ -109,12 +106,12 @@ export default function MyPalette() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.id]); // include any variables from outer scope
 
+  // Call fetchPalettes in useEffect
   useEffect(() => {
-    if (!user?.id) return;
     fetchPalettes();
-  }, [user?.id]);
+  }, [fetchPalettes]); // ✅ ESLint happy
 
   return (
     <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
