@@ -38,7 +38,7 @@ export default function MyPalette() {
 
     const finalColors = colors;
 
-    const { data, error } = await supabase.from("tbl_palettes").insert([
+    const { error } = await supabase.from("tbl_palettes").insert([
       {
         user_id: user.id,
         user_name: user.user_metadata.display_name,
