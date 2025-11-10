@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Copy } from "lucide-react";
 import Swal from "sweetalert2";
 import ColorBox from "../components/ColorBox";
 

@@ -1,9 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { useUser } from "../../context/UserContext";
-import { supabase } from "../../supabaseClient";
-import { Sparkles, Heart, Search, Filter, BookOpen } from "lucide-react";
-import ColorBox from "../../components/ColorBox";
-
 export default function Api() {
   const data = [
     {

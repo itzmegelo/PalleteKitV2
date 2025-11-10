@@ -81,7 +81,7 @@ export default function Profile() {
                   ></path>
                 </svg>
                 <a
-                  href="#"
+                  href="/"
                   className="hover:text-blue-600 transition duration-150"
                 >
                   portfolio.com

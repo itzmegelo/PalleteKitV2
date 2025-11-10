@@ -30,17 +30,6 @@ export default function MyPalette() {
     setColors(updated);
   };
 
-  // generate random hex colors
-  const generateRandomColors = () =>
-    Array.from(
-      { length: 5 },
-      () =>
-        "#" +
-        Math.floor(Math.random() * 16777215)
-          .toString(16)
-          .padStart(6, "0")
-    );
-
   // save palette to supabase
   const handleSubmit = async (e) => {
     e.preventDefault();
