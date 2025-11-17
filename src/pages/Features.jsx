@@ -7,28 +7,28 @@ const Features = () => {
       title: "AI Color Harmony",
       description:
         "Generate perfectly balanced color palettes using AI. Get instant combinations that match your style and purpose.",
-      icon: <Sparkles className="text-[#6366f1]" />,
+      icon: <Sparkles className="text-primary" />,
     },
     {
       title: "Smart Palette Editor",
       description:
         "Fine-tune hues, shades, and tones in real time with our intuitive editor — built for designers and developers alike.",
-      icon: <Palette className="text-[#6366f1]" />,
+      icon: <Palette className="text-primary" />,
     },
     {
       title: "One-Click Sharing",
       description:
         "Share your palettes instantly with teammates or export them to Figma, CSS, or your favorite design tools.",
-      icon: <Share2 className="text-[#6366f1]" />,
+      icon: <Share2 className="text-primary" />,
     },
   ];
 
   return (
-    <section id="features" className="bg-white dark:bg-gray-900 mb-6 py-10">
+    <section id="features" className="bg-white dark:bg-dark_primary mb-6 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="lg:text-center">
-          <h2 className="text-base text-[#6366f1] font-semibold tracking-wide uppercase">
+          <h2 className="text-base text-primary font-semibold tracking-wide uppercase">
             Explore Creativity
           </h2>
           <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-black dark:text-white sm:text-4xl">
@@ -46,10 +46,10 @@ const Features = () => {
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className="flex flex-col justify-center items-center text-center p-6 bg-gray-50 dark:bg-white/5 rounded-xl shadow-xl border border-[#6366f1]/30 transition duration-300 hover:shadow-[#6366f1]/50"
+                className="flex flex-col justify-center items-center text-center p-6 bg-gray-50 dark:bg-white/5 rounded-xl shadow-xl border border-primary/30 transition duration-300 hover:shadow-primary/50"
               >
                 <dt className="flex flex-col items-center">
-                  <div className="flex justify-center items-center h-12 w-12 rounded-full bg-[#6366f1]/10 mb-4">
+                  <div className="flex justify-center items-center h-12 w-12 rounded-full bg-primary/10 mb-4">
                     {feature.icon}
                   </div>
                   <p className="mt-2 text-lg leading-6 font-medium text-black dark:text-white">

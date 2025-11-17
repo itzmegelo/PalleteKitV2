@@ -60,9 +60,9 @@ export default function Api() {
           core data resources via a RESTful interface. All requests and
           responses are formatted as JSON.
         </p>
-        <div className="p-4 bg-indigo-50 rounded-lg border border-indigo-200 text-indigo-800">
+        <div className="p-4 bg-primary rounded-lg border border-primary text-primary">
           <p className="font-semibold">Base URL:</p>
-          <code className="code-block text-indigo-900">
+          <code className="code-block text-primary">
             https://itzmegelo-backend.onrender.com/
           </code>
         </div>

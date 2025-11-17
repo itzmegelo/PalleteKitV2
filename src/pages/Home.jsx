@@ -10,7 +10,7 @@ function Home() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center text-center min-h-screen bg-white dark:bg-gray-900">
+    <main className="flex flex-col items-center justify-center text-center min-h-screen bg-white dark:bg-dark_primary">
       <section className="min-h-[90vh] flex flex-col items-center justify-center relative overflow-hidden w-full p-4">
         <div className="max-w-4xl text-center">
           <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight text-black dark:text-white tracking-tight">
@@ -27,7 +27,7 @@ function Home() {
 
           <button
             onClick={goToAbout}
-            className="bg-transparent text-primary font-extrabold py-4 px-10 rounded-xl text-xl hover:bg-[#6366f1] hover:text-white transition duration-300 shadow-xl shadow-accent-main/50 border border-[#6366f1]"
+            className="bg-transparent text-primary font-extrabold py-4 px-10 rounded-xl text-xl hover:bg-primary hover:text-white transition duration-300 shadow-xl shadow-accent-main/50 border border-primary"
           >
             Generate Palette
           </button>

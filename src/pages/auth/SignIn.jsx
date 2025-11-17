@@ -53,7 +53,7 @@ export default function SignIn() {
 
   return (
     <div className="font-sans min-h-screen flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-md dark:bg-white/5 border border-[#6366f1]/30 transition duration-300 hover:shadow-[#6366f1]/50">
+      <div className="w-full max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-md dark:bg-white/5 border border-primary/30 transition duration-300 hover:shadow-primary/50">
         <div className="p-8 space-y-6">
           {/* Header */}
           <div className="text-center">
@@ -81,7 +81,7 @@ export default function SignIn() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm transition duration-150 ease-in-out dark:bg-white/5 dark:border-gray-700"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm transition duration-150 ease-in-out dark:bg-white/5 dark:border-gray-700"
                 required
               />
             </div>
@@ -100,7 +100,7 @@ export default function SignIn() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm transition duration-150 ease-in-out dark:bg-white/5 dark:border-gray-700"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm transition duration-150 ease-in-out dark:bg-white/5 dark:border-gray-700"
                 required
               />
             </div>
@@ -109,7 +109,7 @@ export default function SignIn() {
             {/* <div className="flex items-center justify-end">
               <a
                 href="/"
-                className="text-xs font-medium text-indigo-600 hover:text-indigo-700 transition duration-150 ease-in-out"
+                className="text-xs font-medium text-primary hover:text-primary transition duration-150 ease-in-out"
               >
                 Forgot Password?
               </a>
@@ -120,12 +120,8 @@ export default function SignIn() {
               type="submit"
               disabled={loading}
               className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-lg text-base font-semibold text-white
-    ${
-      loading
-        ? "bg-indigo-400 cursor-not-allowed"
-        : "bg-indigo-600 hover:bg-indigo-700"
-    }
-    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600
+    ${loading ? "bg-primary cursor-not-allowed" : "bg-primary hover:bg-primary"}
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
     transition duration-300 ease-in-out transform hover:scale-[1.01] active:scale-[0.99]`}
             >
               {loading ? "Signing in..." : "Sign In"}
@@ -151,7 +147,7 @@ export default function SignIn() {
               Don't have an account?{" "}
               <a
                 href="/signup"
-                className="font-semibold text-indigo-600 hover:text-indigo-700"
+                className="font-semibold text-primary hover:text-primary"
               >
                 Register Now
               </a>

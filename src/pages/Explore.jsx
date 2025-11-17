@@ -2,9 +2,9 @@ import React from "react";
 
 export default function Explore() {
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800 w-full text-center px-4">
+    <section className="py-20 bg-gray-50 dark:bg-[#0f172b] w-full text-center px-4">
       <div className="lg:text-center mb-6">
-        <h2 className="text-base text-[#6366f1] font-semibold tracking-wide uppercase">
+        <h2 className="text-base text-primary font-semibold tracking-wide uppercase">
           Discover Inspiration
         </h2>
         <p className="mt-2 text-4xl leading-8 font-extrabold tracking-tight text-black dark:text-white sm:text-5xl">

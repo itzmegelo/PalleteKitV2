@@ -142,7 +142,7 @@ export default function Browse() {
             placeholder="Search palettes..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 rounded-md border text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="w-full pl-9 pr-3 py-1.5 rounded-md border text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary outline-none"
           />
         </div>
         <div className="flex items-center gap-1">
@@ -150,7 +150,7 @@ export default function Browse() {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="px-2 py-1.5 rounded-md border text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="px-2 py-1.5 rounded-md border text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary outline-none"
           >
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
@@ -182,7 +182,7 @@ export default function Browse() {
 
                 {/* Creator */}
                 <div className="absolute bottom-2 left-2 flex items-center gap-1.5 bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
-                  <BookOpen className="h-4 w-4 text-indigo-600" />
+                  <BookOpen className="h-4 w-4 text-primary" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
                     {palette.creator}
                   </span>

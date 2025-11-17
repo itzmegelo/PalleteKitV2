@@ -140,7 +140,7 @@ export default function MyPalette() {
 
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-md text-sm transition-colors"
+          className="flex items-center gap-1.5 bg-primary hover:bg-primary text-white px-3 py-1.5 rounded-md text-sm transition-colors"
         >
           <Plus size={16} />
           <span className="font-medium">Add New</span>
@@ -209,7 +209,7 @@ export default function MyPalette() {
                   onChange={(e) => setPaletteName(e.target.value)}
                   placeholder="e.g., Sunset Glow"
                   required
-                  className="w-full p-2 rounded-md border dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full p-2 rounded-md border dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none"
                 />
               </div>
 
@@ -280,7 +280,7 @@ export default function MyPalette() {
                           handleColorChange(index, e.target.value)
                         }
                         placeholder={`Color ${index + 1}`}
-                        className="w-full p-2 rounded-md border dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full p-2 rounded-md border dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none"
                       />
                     ))}
                   </div>
@@ -300,7 +300,7 @@ export default function MyPalette() {
 
               <button
                 type="submit"
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md font-medium transition-colors"
+                className="w-full bg-primary hover:bg-primary text-white py-2 rounded-md font-medium transition-colors"
               >
                 Save Palette
               </button>

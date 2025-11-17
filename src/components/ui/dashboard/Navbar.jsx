@@ -37,7 +37,7 @@ export default function Navbar({ theme, toggleTheme }) {
             to="/dashboard"
             className="text-3xl font-extrabold text-black dark:text-white"
           >
-            Palette<span className="text-[#6366f1]">Kit</span>
+            Palette<span className="text-primary">Kit</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -51,8 +51,8 @@ export default function Navbar({ theme, toggleTheme }) {
                   to={item.href}
                   className={`font-semibold transition-colors ${
                     isActive
-                      ? "text-[#6366f1] border-b-2 border-[#6366f1] pb-1"
-                      : "text-gray-700 dark:text-gray-200 hover:text-[#6366f1]"
+                      ? "text-primary border-b-2 border-primary pb-1"
+                      : "text-gray-700 dark:text-gray-200 hover:text-primary"
                   }`}
                 >
                   {item.name}
@@ -78,7 +78,7 @@ export default function Navbar({ theme, toggleTheme }) {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 rounded-md text-[#6366f1] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#6366f1]/20"
+              className="md:hidden p-2 rounded-md text-primary dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-primary/20"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? <X /> : <Menu />}
@@ -99,8 +99,8 @@ export default function Navbar({ theme, toggleTheme }) {
                   to={item.href}
                   className={`block transition-colors ${
                     isActive
-                      ? "text-[#6366f1] font-semibold"
-                      : "text-gray-700 dark:text-gray-200 hover:text-[#6366f1]"
+                      ? "text-primary font-semibold"
+                      : "text-gray-700 dark:text-gray-200 hover:text-primary"
                   }`}
                   onClick={() => setMenuOpen(false)}
                 >

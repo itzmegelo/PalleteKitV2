@@ -14,7 +14,7 @@ export default function Navbar({ theme, toggleTheme }) {
   ];
 
   return (
-    <nav className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 sticky top-0 z-50 w-full backdrop-blur-sm transition-colors duration-300">
+    <nav className="bg-white dark:bg-dark_primary border-b border-primary dark:border-primary sticky top-0 z-50 w-full backdrop-blur-sm transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -22,7 +22,7 @@ export default function Navbar({ theme, toggleTheme }) {
             to="/"
             className="text-3xl font-extrabold text-black dark:text-white"
           >
-            Palette<span className="text-[#6366f1]">Kit</span>
+            Palette<span className="text-primary">Kit</span>
           </Link>
 
           {/* Desktop Menu */}
@@ -35,8 +35,8 @@ export default function Navbar({ theme, toggleTheme }) {
                   to={item.href}
                   className={`font-semibold transition-colors ${
                     isActive
-                      ? "text-[#6366f1] border-b-2 border-[#6366f1] pb-1"
-                      : "text-gray-700 dark:text-gray-200 hover:text-[#6366f1]"
+                      ? "text-primary border-b-2 border-primary pb-1"
+                      : "text-gray-700 dark:text-gray-200 hover:text-primary"
                   }`}
                 >
                   {item.name}
@@ -49,7 +49,7 @@ export default function Navbar({ theme, toggleTheme }) {
           <div className="flex items-center space-x-4">
             <button
               onClick={toggleTheme}
-              className="p-2 text-white rounded-full bg-[#6366f1] hover:bg-[#6366f1]"
+              className="p-2 text-white rounded-full bg-primary hover:bg-primary"
             >
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -62,7 +62,7 @@ export default function Navbar({ theme, toggleTheme }) {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 rounded-md text-[#6366f1] dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#6366f1]"
+              className="md:hidden p-2 rounded-md text-primary dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-primary"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? <X /> : <Menu />}
@@ -83,8 +83,8 @@ export default function Navbar({ theme, toggleTheme }) {
                   to={item.href}
                   className={`block transition-colors ${
                     isActive
-                      ? "text-[#6366f1] font-semibold"
-                      : "text-gray-700 dark:text-gray-200 hover:text-[#6366f1]"
+                      ? "text-primary font-semibold"
+                      : "text-gray-700 dark:text-gray-200 hover:text-primary"
                   }`}
                   onClick={() => setMenuOpen(false)}
                 >

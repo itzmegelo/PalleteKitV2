@@ -75,7 +75,7 @@ export default function SignUp() {
 
   return (
     <div className="font-sans min-h-screen flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-md dark:bg-white/5 border border-[#6366f1]/30 transition duration-300 hover:shadow-[#6366f1]/50">
+      <div className="w-full max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-md dark:bg-white/5 border border-primary/30 transition duration-300 hover:shadow-primary/50">
         <div className="p-8 space-y-6">
           <div className="text-center">
             <h1 className="text-3xl font-extrabold text-gray-800 dark:text-primary">
@@ -101,7 +101,7 @@ export default function SignUp() {
                 placeholder="Enter username"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm dark:bg-white/5 dark:border-gray-700"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-white/5 dark:border-gray-700"
                 required
               />
             </div>
@@ -120,7 +120,7 @@ export default function SignUp() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm dark:bg-white/5 dark:border-gray-700"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-white/5 dark:border-gray-700"
                 required
               />
             </div>
@@ -139,7 +139,7 @@ export default function SignUp() {
                 placeholder="Enter phone number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm dark:bg-white/5 dark:border-gray-700"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-white/5 dark:border-gray-700"
                 required
               />
             </div>
@@ -158,7 +158,7 @@ export default function SignUp() {
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 sm:text-sm dark:bg-white/5 dark:border-gray-700"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-white/5 dark:border-gray-700"
                 required
               />
             </div>
@@ -170,7 +170,7 @@ export default function SignUp() {
                 id="terms"
                 checked={termsAccepted}
                 onChange={(e) => setTermsAccepted(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
               />
               <label
                 htmlFor="terms"
@@ -180,7 +180,7 @@ export default function SignUp() {
                 <button
                   type="button"
                   onClick={() => setShowTerms(true)}
-                  className="text-indigo-600 hover:text-indigo-700 underline"
+                  className="text-primary hover:text-primary underline"
                 >
                   Terms & Conditions
                 </button>
@@ -190,7 +190,7 @@ export default function SignUp() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-lg text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 transition duration-300 ease-in-out"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-lg text-base font-semibold text-white bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300 ease-in-out"
             >
               {loading ? "Creating Account..." : "Sign Up"}
             </button>
@@ -213,7 +213,7 @@ export default function SignUp() {
               Already have an account?{" "}
               <a
                 href="/signin"
-                className="font-semibold text-indigo-600 hover:text-indigo-700"
+                className="font-semibold text-primary hover:text-primary"
               >
                 Sign In
               </a>
@@ -290,7 +290,7 @@ export default function SignUp() {
                 setTermsAccepted(true);
                 setShowTerms(false);
               }}
-              className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md font-medium transition-colors"
+              className="mt-4 w-full bg-primary hover:bg-primary text-white py-2 rounded-md font-medium transition-colors"
             >
               Accept Terms
             </button>
