@@ -98,7 +98,7 @@ export default function Dashboard() {
             </p>
             <p className="text-sm text-primary mt-2">Created by you</p>
           </div>
-          <div className="bg-primary text-primary p-4 rounded-full">
+          <div className="bg-green-100 text-primary p-4 rounded-full">
             <Palette className="h-10 w-10" />
           </div>
         </div>
