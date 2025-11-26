@@ -68,7 +68,7 @@ export default function Api() {
         </div>
       </section>
       <h2 className="text-3xl font-bold mt-5 mb-8 text-gray-800 border-b pb-2 dark:text-white">
-        Resource Endpoints
+        Resources Endpoints
       </h2>
       <section
         id="get-users"
